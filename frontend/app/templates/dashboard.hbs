@@ -1,0 +1,46 @@
+<div class="row">
+    <h1 class="primary-text">Dashboard</h1>
+    <div class="col s6">
+        <div class="card">
+            <div class="card-content" data-tracked>
+                <span class="card-title primary-text">Tracked Clicks</span>
+                <p>Check your already configured and tracking clicks.</p>
+            </div>
+            <div class="card-action">
+                <a href="/dashboard/tracked" class="primary-text">Configure</a>
+            </div>
+        </div>
+    </div>
+     <div class="col s6">
+        <div class="card" data-harvested>
+            <div class="card-content">
+                <span class="card-title primary-text">Harvested Clicks</span>
+                <p>Check unconfigured harvested clicks.</p>
+            </div>
+            <div class="card-action">
+                <a href="/dashboard/harvested" class="primary-text">Configure</a>
+            </div>
+        </div>
+    </div>
+    <div class="col s12">
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title primary-text">Configuration and Setup</span>
+                <div class="section">
+                    <div class="input-field">
+                        <input id="google-id" type="text" class="validate">
+                        <label for="google-id">UA TID</label>
+                    </div>
+                    <button class="btn waves-effect waves-light" type="submit" name="action">
+                        Save
+                    </button>
+                </div>
+                <div class="divider"></div>
+                <div class="section">
+                    <b>Snippet</b>
+                    <input id="snippet" type="text" value="<script>daz script</script>" disabled>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

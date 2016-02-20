@@ -1,0 +1,35 @@
+@import 'materialize';
+
+body {
+    background-color: #e0e0e0;
+}
+
+.brand-logo {
+    left: 10px;
+}
+
+.loading {
+    opacity: 0.6;
+}
+
+.invisible {
+    visibility: hidden;
+}
+
+.wrap-content {
+    padding: 2em;
+}
+
+.wrap {
+    white-space: -moz-pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
+}
+
+.primary-color {
+    @extend .teal, .darken-4;
+}
+
+.primary-text {
+    @extend .teal-text, .text-darken-2;
+}
