@@ -16,7 +16,7 @@ defmodule Hackathon.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
-    post "/click/harvest", ClickController, :click
+    post "/click", ClickController, :click
   end
 
   # Other scopes may use custom stacks.

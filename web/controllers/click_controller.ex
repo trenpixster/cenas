@@ -6,14 +6,14 @@ defmodule Hackathon.ClickController do
     nfa_id = params["nfa_id"]
     url = params["url"]
     payload = params["payload"]
-    type = "harvest"#params["type"]
 
-    insert_click(cid, nfa_id, url, payload, type)
+    insert_click(cid, nfa_id, url, payload)
 
     json conn, %{success: true}
   end
 
-  defp insert_click(cid, nfa_id, url, payload, "harvest") do
+  defp insert_click(cid, nfa_id, url, payload) do
     {:ok, click} = Hackathon.HarvestClickInteractor.call(cid, nfa_id, url, payload)
   end
+
 end
