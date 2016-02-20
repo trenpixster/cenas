@@ -6,6 +6,7 @@ defmodule Hackathon.User do
     field :username, :string
     field :email, :string
     field :hash, :string
+    field :tid, :string
 
     timestamps
   end

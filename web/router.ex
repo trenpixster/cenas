@@ -16,9 +16,13 @@ defmodule Hackathon.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
+    get "/default_user", UserController, :default_user
+    post "/update_tid", UserController, :update_tid
+
     get "/clicks/:id", ClickController, :show
     get "/clicks", ClickController, :index
     post "/click", ClickController, :click
+
     options "/click", ClickController, :wtf
     options "/", ClickController, :wtf
   end
