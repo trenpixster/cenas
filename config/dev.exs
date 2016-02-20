@@ -34,9 +34,7 @@ config :phoenix, :stacktrace_depth, 20
 
 # Configure your database
 config :hackathon, Hackathon.Repo,
-  adapter: Ecto.Adapters.Postgres,
-  username: "postgres",
-  password: "postgres",
+  adapter: Ecto.Adapters.Mongo,
   database: "hackathon_dev",
   hostname: "localhost",
   pool_size: 10
