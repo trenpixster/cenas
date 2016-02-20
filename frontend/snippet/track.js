@@ -44,6 +44,7 @@
             }
         };
 
+        xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.send(body ? JSON.stringify(body) : undefined);
         xhr = null;
     }
@@ -97,35 +98,37 @@
         return result;
     }
 
-    function onClicked (ev) {
-        if (ev.clientX) { // non-human click
-            var target = ev.target;
-            console.log({
-                url:    'localhost:8080/click',
-                method: 'POST',
-                body:   {
-                    cid:     guid(),
-                    nfa_id:  nfaId,
-                    url:     location.href,
-                    payload: {
-                        target: target.outerHTML,
-                        attrs:  getAttributes(target.attributes)
+    function track (cid) {
+        return function (ev) {
+            if (ev.clientX) { // non-human click
+                var target = ev.target;
+                console.log({
+                    url:    'localhost:8080/click',
+                    method: 'POST',
+                    body:   {
+                        cid:     cid,
+                        nfa_id:  nfaId,
+                        url:     location.href,
+                        payload: {
+                            target: target.outerHTML,
+                            attrs:  getAttributes(target.attributes)
+                        }
                     }
-                }
-            });
-            request({
-                url:    'localhost:4000/click',
-                method: 'POST',
-                body:   {
-                    cid:     guid(),
-                    nfa_id:  nfaId,
-                    url:     location.href,
-                    payload: {
-                        target: target.outerHTML,
-                        attrs:  getAttributes(target.attributes)
+                });
+                request({
+                    url:    'http://localhost:4000/click',
+                    method: 'POST',
+                    body:   {
+                        cid:     cid,
+                        nfa_id:  nfaId,
+                        url:     location.href,
+                        payload: {
+                            target: target.outerHTML,
+                            attrs:  getAttributes(target.attributes)
+                        }
                     }
-                }
-            });
+                });
+            }
         }
     }
 
@@ -135,7 +138,7 @@
             writeCookie('nfa', uuid);
 
             nfaId = userId;
-            document.onclick = onClicked;
+            document.onclick = track(uuid);
         }
     };
 }());
