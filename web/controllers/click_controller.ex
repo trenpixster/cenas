@@ -16,6 +16,10 @@ defmodule Hackathon.ClickController do
     json conn, click
   end
 
+  def wtf(conn, _) do
+    text conn, "ok"
+  end
+
   def click(conn, params) do
     cid = params["cid"]
     nfa_id = params["nfa_id"]

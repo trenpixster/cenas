@@ -19,6 +19,8 @@ defmodule Hackathon.Router do
     get "/clicks/:id", ClickController, :show
     get "/clicks", ClickController, :index
     post "/click", ClickController, :click
+    options "/click", ClickController, :wtf
+    options "/", ClickController, :wtf
   end
 
   # Other scopes may use custom stacks.
