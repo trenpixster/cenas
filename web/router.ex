@@ -5,6 +5,7 @@ defmodule Hackathon.Router do
     plug :accepts, ["html", "json"]
     plug :fetch_session
     plug :fetch_flash
+    plug CORSPlug
   end
 
   pipeline :api do
