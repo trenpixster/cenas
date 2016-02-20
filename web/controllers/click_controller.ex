@@ -8,6 +8,14 @@ defmodule Hackathon.ClickController do
     json conn, clicks
   end
 
+  def show(conn, params) do
+    id = params["id"]
+    click = Hackathon.Repo.get_by(Hackathon.Click, id: id)
+    |> Map.drop [:__meta__, :__struct__]
+
+    json conn, click
+  end
+
   def click(conn, params) do
     cid = params["cid"]
     nfa_id = params["nfa_id"]
