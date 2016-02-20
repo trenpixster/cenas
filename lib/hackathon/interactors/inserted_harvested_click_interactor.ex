@@ -19,6 +19,7 @@ defmodule Hackathon.InsertHarvestedClickInteractor do
     model = %Click{
       nfa_id: nfa_id,
       url: url,
+      cid: cid,
       unicorn: unicorn,
       payload: payload,
       events: []

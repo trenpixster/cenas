@@ -5,6 +5,7 @@ defmodule Hackathon.Click do
   schema "click" do
     field :unicorn, :string
     field :url, :string
+    field :cid, :string
     field :events, {:array, :map}
     field :nfa_id, :string
     field :payload, :map

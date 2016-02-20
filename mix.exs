@@ -19,7 +19,7 @@ defmodule Hackathon.Mixfile do
   def application do
     [mod: {Hackathon, []},
      applications: [:phoenix, :phoenix_html, :cowboy, :logger, :mongodb_ecto,
-                    :phoenix_ecto, :postgrex]]
+                    :phoenix_ecto, :postgrex, :httpotion]]
   end
 
   # Specifies which paths to compile per environment.
@@ -34,6 +34,7 @@ defmodule Hackathon.Mixfile do
      {:phoenix_ecto, "~> 1.1"},
      {:mongodb_ecto, ">= 0.0.0"},
      {:postgrex, ">= 0.0.0"},
+     {:httpotion, "~> 2.2.0"},
      {:cors_plug, "~> 1.1"},
      {:phoenix_html, "~> 2.1"},
      {:phoenix_live_reload, "~> 1.0", only: :dev},
