@@ -20,6 +20,7 @@ defmodule Hackathon.InsertHarvestedClickInteractor do
       nfa_id: nfa_id,
       url: url,
       cid: cid,
+      ignored: false,
       unicorn: unicorn,
       payload: payload,
       events: []

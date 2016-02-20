@@ -4,7 +4,18 @@ defmodule Hackathon.ClickController do
   use Hackathon.Web, :controller
 
   def index(conn, params) do
-    clicks = Repo.all(Click) |> Enum.map(fn(el) -> Map.drop(el, [:__meta__, :__struct__]) end)
+    index_clicks(conn, false)
+  end
+
+  def index_ignored(conn, params) do
+    index_clicks(conn, true)
+  end
+
+  def index_clicks(conn, is_ignored) do
+    query = from c in Click,
+              where: c.ignored == ^is_ignored,
+             select: c
+    clicks = Repo.all(query) |> Enum.map(fn(el) -> Map.drop(el, [:__meta__, :__struct__]) end)
     json conn, clicks
   end
 
@@ -14,6 +25,16 @@ defmodule Hackathon.ClickController do
     |> Map.drop [:__meta__, :__struct__]
 
     json conn, click
+  end
+
+  def ignore(conn, params) do
+    click_id = params["click_id"]
+
+    model = Repo.get_by Click, id: click_id
+    model = %Click{ model | ignored: true }
+
+    Repo.update model
+    json conn, %{success: true}
   end
 
   def wtf(conn, _) do
