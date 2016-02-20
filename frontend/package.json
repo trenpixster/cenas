@@ -1,0 +1,58 @@
+{
+  "name": "hackathon",
+  "version": "1.0.0",
+  "description": "No hassle analytics",
+  "main": "index.js",
+  "scripts": {
+    "build": "rimraf dist/ && mkdirp dist/ && npm-run-all -s build:hbs build:js build:scss",
+    "build:js": "browserify app/app.js -o dist/app.js",
+    "build:scss": "node-sass --include-path ./node_modules/materialize-css/sass/ sass/app.scss dist/app.css",
+    "watch:js": "watchify -d app/app.js -o dist/app.js",
+    "watch:scss": "node-sass --include-path ./node_modules/materialize-css/sass/ -w sass/app.scss -r sass/ --source-map dist/ sass/app.scss -o dist/",
+    "livereload": "livereload dist/",
+    "dev": "rimraf dist/ && mkdirp dist/ && npm run build:scss && npm-run-all -p watch:js watch:scss livereload",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "aliasify": {
+    "aliases": {
+      "app": "./app",
+      "materialize": "materialize-css/js"
+    }
+  },
+  "browserify": {
+    "transform": [
+      "browserify-handlebars",
+      "babelify",
+      "aliasify"
+    ]
+  },
+  "keywords": [
+    "hackathon",
+    "analytics",
+    "google"
+  ],
+  "author": "Black Aura Tricorn Hellbound Captains",
+  "license": "ISC",
+  "devDependencies": {
+    "aliasify": "^1.9.0",
+    "babel-core": "^6.5.2",
+    "babel-preset-es2015": "^6.5.0",
+    "babelify": "^7.2.0",
+    "browserify": "^13.0.0",
+    "browserify-handlebars": "^1.0.0",
+    "browserify-shim": "^3.8.12",
+    "livereload": "^0.4.1",
+    "mkdirp": "^0.5.1",
+    "node-sass": "^3.4.2",
+    "npm-run-all": "^1.5.1",
+    "rimraf": "^2.5.2",
+    "watch": "^0.17.1",
+    "watchify": "^3.7.0"
+  },
+  "dependencies": {
+    "handlebars": "^4.0.5",
+    "jquery": "^2.2.0",
+    "materialize-css": "^0.97.5",
+    "page": "^1.6.4"
+  }
+}
