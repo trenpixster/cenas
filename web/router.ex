@@ -21,6 +21,7 @@ defmodule Hackathon.Router do
 
     get "/clicks", ClickController, :index
     get "/clicks/ignored", ClickController, :index_ignored
+    post "/click/ignore", ClickController, :ignore
     get "/clicks/:id", ClickController, :show
     post "/click", ClickController, :click
 
