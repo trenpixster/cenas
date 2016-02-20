@@ -1,17 +1,16 @@
-defmodule Hackathon.User do
+defmodule Hackathon.Rule do
   use Hackathon.Web, :model
 
   @primary_key {:id, :binary_id, autogenerate: true}
-  schema "user" do
-    field :username, :string
-    field :email, :string
-    field :hash, :string
-    field :tid, :string
-
+  schema "rule" do
+    field :nfa_id, :string
+    field :title, :string
+    field :trigger, :map
+    field :action, :map
     timestamps
   end
 
-  @required_fields ~w(username email hash)
+  @required_fields ~w()
   @optional_fields ~w()
 
   @doc """
