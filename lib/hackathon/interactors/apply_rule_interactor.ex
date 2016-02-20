@@ -42,9 +42,6 @@ defmodule Hackathon.ApplyRuleInteractor do
   end
 
   defp extract_url_fragment(url, chunk) do
-    IO.puts "extract_url_fragment"
-    IO.inspect url
-    IO.inspect chunk
     String.replace(url, "://", "")
     |> String.split("/")
     |> Enum.at(chunk)

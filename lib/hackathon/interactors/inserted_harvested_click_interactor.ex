@@ -24,7 +24,6 @@ defmodule Hackathon.InsertHarvestedClickInteractor do
       payload: payload,
       events: []
     } |> Click.add_click_event(cid)
-    IO.inspect model
     Repo.insert model
   end
 end
