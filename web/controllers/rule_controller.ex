@@ -18,6 +18,13 @@ defmodule Hackathon.RuleController do
     json conn, (model |> Map.drop [:__meta__, :__struct__])
   end
 
+  def delete(conn, params) do
+    rule_id = params["rule_id"]
+    Repo.delete %Rule{ id: rule_id }
+
+    json conn, %{success: true}
+  end
+
   def index(conn, params) do
     rules = Repo.all(Rule)
     |> Enum.map(fn (el) -> Map.drop el, [:__meta__, :__struct__] end)
