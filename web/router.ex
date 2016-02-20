@@ -5,7 +5,6 @@ defmodule Hackathon.Router do
     plug :accepts, ["html", "json"]
     plug :fetch_session
     plug :fetch_flash
-    plug :put_secure_browser_headers
   end
 
   pipeline :api do
