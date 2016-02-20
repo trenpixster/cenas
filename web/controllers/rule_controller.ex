@@ -9,7 +9,7 @@ defmodule Hackathon.RuleController do
     action = params["action"]
     nfa_id = params["nfa_id"]
 
-    model = %Rule{nfa_id: nfa_id, trigger: trigger, action: action}
+    model = %Rule{nfa_id: nfa_id, trigger: trigger, action: action, title: title}
     Repo.insert model
 
     json conn, (model |> Map.drop [:__meta__, :__struct__])
