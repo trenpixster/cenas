@@ -19,11 +19,11 @@ defmodule Hackathon.InsertHarvestedClickInteractor do
     model = %Click{
       nfa_id: nfa_id,
       url: url,
+      cid: cid,
       unicorn: unicorn,
       payload: payload,
       events: []
     } |> Click.add_click_event(cid)
-    IO.inspect model
     Repo.insert model
   end
 end

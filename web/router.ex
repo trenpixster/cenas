@@ -23,12 +23,10 @@ defmodule Hackathon.Router do
     get "/clicks", ClickController, :index
     post "/click", ClickController, :click
 
+    post "/rule", RuleController, :create
+    get "/rules", RuleController, :index
+
     options "/click", ClickController, :wtf
     options "/", ClickController, :wtf
   end
-
-  # Other scopes may use custom stacks.
-  # scope "/api", Hackathon do
-  #   pipe_through :api
-  # end
 end
