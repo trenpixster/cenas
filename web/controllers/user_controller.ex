@@ -14,8 +14,8 @@ defmodule Hackathon.UserController do
   def update_tid(conn, params) do
     tid = params["tid"]
     model = get_user
-    model = %{model | tid: tid}
-    Repo.update User, model
+    model = %User{model | tid: tid}
+    Repo.update model
 
     json conn, %{success: true}
   end
