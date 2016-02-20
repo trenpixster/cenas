@@ -6,7 +6,7 @@ defmodule Hackathon.ApplyRuleInteractor do
     ec = extract_values(action["category"], model)#
     ea = extract_values(action["action"], model)
     el = extract_values(action["label"], model)
-    ev = extract_values(String.to_integer(action["value"]), model)
+    ev = String.to_integer(extract_values(action["value"], model))
     cid = model.cid
     tid = get_tid_from_user(model.nfa_id)
     SendDataToGoogleAnalyticsInteractor.call(v, ec, ea, el, ev, cid, tid)
