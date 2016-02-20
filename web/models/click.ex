@@ -3,11 +3,11 @@ defmodule Hackathon.Click do
 
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "click" do
-    field :cid, :string
+    field :unicorn, :string
+    field :url, :string
+    field :events, {:array, :map}
     field :nfa_id, :string
     field :payload, :map
-    field :url, :string
-
     timestamps
   end
 
@@ -23,5 +23,13 @@ defmodule Hackathon.Click do
   def changeset(model, params \\ :empty) do
     model
     |> cast(params, @required_fields, @optional_fields)
+  end
+
+  def unicornify(url, target) do
+    :crypto.hash(:sha, url <> target) |> Base.encode16
+  end
+
+  def add_click_event(model, cid) do
+    %{ model | events: [%{cid: cid, timestamp: Ecto.DateTime.to_string(Ecto.DateTime.utc)}] ++ model.events }
   end
 end
