@@ -7,10 +7,13 @@
     "build": "rimraf dist/ && mkdirp dist/ && npm-run-all -s build:hbs build:js build:scss",
     "build:js": "browserify app/app.js -o dist/app.js",
     "build:scss": "node-sass --include-path ./node_modules/materialize-css/sass/ sass/app.scss dist/app.css",
+    "copy:snippet": "copyfiles -u 1 snippet/track.js dist",
     "watch:js": "watchify -d app/app.js -o dist/app.js",
     "watch:scss": "node-sass --include-path ./node_modules/materialize-css/sass/ -w sass/app.scss -r sass/ --source-map dist/ sass/app.scss -o dist/",
+    "watch:snippet": "watch 'npm run copy:snippet' snippet/",
     "livereload": "livereload dist/",
-    "dev": "rimraf dist/ && mkdirp dist/ && npm run build:scss && npm-run-all -p watch:js watch:scss livereload",
+    "run:server": "http-server",
+    "dev": "rimraf dist/ && mkdirp dist/ && npm run build:scss && npm-run-all -p watch:js watch:scss watch:snippet run:server livereload",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "aliasify": {
@@ -41,6 +44,7 @@
     "browserify": "^13.0.0",
     "browserify-handlebars": "^1.0.0",
     "browserify-shim": "^3.8.12",
+    "copyfiles": "^0.2.1",
     "livereload": "^0.4.1",
     "mkdirp": "^0.5.1",
     "node-sass": "^3.4.2",
