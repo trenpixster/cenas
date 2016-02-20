@@ -4,7 +4,7 @@
   "description": "No hassle analytics",
   "main": "index.js",
   "scripts": {
-    "build": "rimraf dist/ && mkdirp dist/ && npm-run-all -s build:hbs build:js build:scss",
+    "build": "rimraf dist/ && mkdirp dist/ && npm-run-all -s build:js build:scss copy:snippet && cp dist/app.js ../priv/static/js/ && cp dist/app.css ../priv/static/css/ && cp dist/track.js ../priv/static/js/",
     "build:js": "browserify app/app.js -o dist/app.js",
     "build:scss": "node-sass --include-path ./node_modules/materialize-css/sass/ sass/app.scss dist/app.css",
     "copy:snippet": "copyfiles -u 1 snippet/track.js dist",
