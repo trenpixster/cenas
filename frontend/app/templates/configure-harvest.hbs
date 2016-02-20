@@ -1,0 +1,88 @@
+<h1 class="primary-text">Configure Harvested Click</h1>
+<div class="row">
+    <div class="card-panel">
+        <div class="section wrap-content">
+            <b><div class="chip">1</div> Name of the tracking</b>
+            <div class="input-field">
+                <input id="title" type="text" class="validate" placeholder="Tracking Title">
+            </div>
+        </div>
+        <div class="divider"></div>
+        <div class="section wrap-content">
+            <b><div class="chip">2</div> What to track</b>
+            <div class="input-field valign-wrapper">
+                <div class="valign" style="margin-right: 1%; margin-top: -1%">Capture clicks when </div>
+                <select id="operator">
+                    <option value="and">Every</option>
+                    <option value="or">Any</option>
+                </select>
+            </div>
+            <div class="input-field">
+                <form action="#" id="trigger">
+                    {{#each trackable as |trackable|}}
+                    <div id="rules" class="row valign-wrapper">
+                        <div class="col s3" style="margin-top: -4%">
+                            <input type="checkbox" id="attr-{{trackable.name}}" value="{{trackable.name}}"/>
+                            <label for="attr-{{trackable.name}}">Attribute {{trackable.name}}</label>
+                        </div>
+                        <select class="col s4" data-operator>
+                            <option value="matches">Matches</option>
+                            <option value="contains">Contains</option>
+                        </select>
+                        <select class="col s4" data-trackable>
+                        {{#each trackable.values as |value|}}
+                            <option value="{{value}}">{{value}}</option>
+                        {{/each}}
+                            <option data-custom>Custom</option>
+                        </select>
+                        {{#unless trackable.values}}
+                            <input class="col s4" type="text" data-custom-value/>
+                        {{else}}
+                            <input class="col s4 invisible" type="text" data-custom-value/>
+                        {{/unless}}
+                    </div>
+                    {{/each}}
+                    <div class="row valign-wrapper">
+                        <div class="col s12">
+                            <input type="checkbox" id="location-only" value="{{parsedUrl}}"/>
+                            <label for="location-only">Track for this url only? ({{parsedUrl}})</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="divider"></div>
+        <div class="section wrap-content">
+            <b><div class="chip">3</div> What to send</b>
+            <div class="input-field valign-wrapper">
+                <div class="valign" style="margin-right: 1%; margin-top: -1%">And send</div>
+                <select id="action-type">
+                    <option value="event-tracking">Event tracking</option>
+                </select>
+            </div>
+            <div class="input-field" data-action-type-values>
+                {{#each parameters}}
+                <div class="valign-wrapper row">
+                    <div class="valign col s2" style="margin-right: 1%; margin-top: -1%">
+                        <b>{{name}}{{#if mandatory}} <span class="red-text text-accent-4">*</span>{{/if}}</b>
+                    </div>
+                    <select class="col s8" data-type="{{value}}">
+                        <option disabled selected value="">Get {{name}} from</option>
+                        {{#each types}}
+                        <option value="{{value}}">{{name}}</option>
+                        {{/each}}
+                    </select>
+                    <div class="col s8 invisible" data-type-value>
+                    </div>
+                </div>
+                {{/each}}
+                <span class="red-text text-accent-4">* Mandatory</span>
+            </div>
+        </div>
+        <div class="divider"></div>
+        <div class="section wrap-content">
+            <button class="btn waves-effect waves-light" type="submit" name="action" data-save>Save</button>
+            <a href="/dashboard/harvested" class="primary-text" style="margin-left: 5%">Back</a>
+        </div>
+    </div>
+</div>

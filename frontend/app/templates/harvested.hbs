@@ -1,0 +1,21 @@
+<h1 class="primary-text">Harvested Clicks</h1>
+<div class="row">
+    {{#each clicks}}
+    <div class="col s4">
+        <div class="card" data-id="{{id}}">
+            <div class="card-content">
+                <span class="card-title primary-text">{{highlight payload.attrs}}</span>
+                <span class="badge" style="margin-top: 2%">Total: {{size-of events}}</span>
+                <p>
+                    <a href="#" class="preview">Preview Element</a>
+                    <pre class="wrap hide">{{preview payload.target}}</pre>
+                </p>
+            </div>
+            <div class="card-action">
+                <a href="/dashboard/harvested/{{id}}" class="primary-text">Configure</a>
+                <a href="#" class="primary-text">Ignore</a>
+            </div>
+        </div>
+    </div>
+    {{/each}}
+</div>
