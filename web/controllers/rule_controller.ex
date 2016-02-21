@@ -20,6 +20,18 @@ defmodule Hackathon.RuleController do
     json conn, (rule |> Map.drop [:__meta__, :__struct__])
   end
 
+  def update(conn, params) do
+    title = params["title"]
+    trigger = params["trigger"]
+    action = params["action"]
+    rule_id = params["rule_id"]
+    rule = Repo.get_by Rule, id: rule_id
+
+    Repo.update %Rule{rule | trigger: trigger, action: action, title: title}
+
+    json conn, (rule |> Map.drop [:__meta__, :__struct__])
+  end
+
   def delete(conn, params) do
     rule_id = params["rule_id"]
     rule = Repo.get_by Rule, id: rule_id

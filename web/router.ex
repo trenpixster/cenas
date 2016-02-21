@@ -31,6 +31,7 @@ defmodule Hackathon.Router do
     post "/rule", RuleController, :create
     get "/rules", RuleController, :index
     get "/rules/:rule_id", RuleController, :show
+    put "/rules/:rule_id", RuleController, :update
 
     options "/click", ClickController, :wtf
     options "/", ClickController, :wtf
