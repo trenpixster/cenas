@@ -1,0 +1,38 @@
+<h1 class="primary-text">Rules</h1>
+<div class="row">
+    {{#each rules as |rule|}}
+    <div class="col s6">
+        <div class="card" data-id="{{id}}">
+            <div class="card-content">
+                <span class="card-title primary-text activator">{{title}}</span>
+            </div>
+            <div class="card-reveal">
+                <span class="card-title grey-text text-darken-4">{{title}}<i class="material-icons right">close</i></span>
+                <div class="section">
+                    <strong>Location only enabled?</strong> {{#unless trigger.location_only}}No{{else}}{{trigger.location}}{{/unless}}
+                </div>
+                <div class="section">
+                    <ul class="collection with-header">
+                        <li class="collection-header"><strong>Trigger Rules ({{operator trigger}})</strong></li>
+                        {{#each trigger.rules as |trigger|}}
+                        <li class="collection-item"><strong>{{trigger.attribute}}</strong> {{trigger.operator}} {{trigger.value}}</li>
+                        {{/each}}
+                    </ul>
+                </div>
+                <div class="section">
+                    <ul class="collection with-header">
+                        <li class="collection-header"><strong>Action taken {{event-type action}}</strong></li>
+                        {{#actions rule.action.payload}}
+                        <li class="collection-item"><strong>{{attribute}}</strong> {{type}} {{value}}</li>
+                        {{/actions}}
+                    </ul>
+                </div>
+            </div>
+            <div class="card-action">
+                <a href="/dashboard/rule/{{id}}" class="primary-text">Edit</a>
+                <a href="#" class="primary-text" data-delete>Delete</a>
+            </div>
+        </div>
+    </div>
+    {{/each}}
+</div>

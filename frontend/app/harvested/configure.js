@@ -1,7 +1,8 @@
 (function ($) {
     'use strict';
 
-    const eventTracking = require('./event-tracking'),
+    const page = require('page'),
+        eventTracking = require('./event-tracking'),
         utils = require('app/utils'),
         template = require('app/templates/configure-harvest.hbs'),
         valueTemplate = require('app/templates/type-value.hbs'),
@@ -130,17 +131,57 @@
         };
     }
 
+    const typeHandler = {
+        attribute (values) {
+            return {
+                type: 'fixed',
+                value: Array.prototype.slice.call(values.find('select > option:selected'))
+                            .filter((el) => $(el).val() !== '')
+                            .map((el) => $(el).val()).join()
+            }
+        },
+
+        fixed (values) {
+            return {
+                type:  'fixed',
+                value: values.find('input').val()
+            };
+        },
+
+        'dynamic-attribute' (values) {
+            return {
+                type:  'dynamic-attribute',
+                value: values.find('select > option:selected').val()
+            };
+        },
+
+        'location-path' (values) {
+            return {
+                type:  'location-path',
+                value: values.find('select > option:selected').val()
+            }
+        },
+
+        'location-query' (values) {
+            return {
+                type:  'location-query',
+                value: values.find('select > option:selected').val()
+            }
+        }
+    }
+
     function getAction () {
         const $types = $.content.find('[data-action-type-values]');
         return {
             type:    $.content.find('#action-type').val(),
             payload: Array.prototype.slice.call($types.find('[data-type]')).reduce((result, el) => {
-                const $el = $(el),
-                    type  = $el.find(':selected').val(),
-                    value = $el.parent().siblings('[data-type-value]').find('select > option:selected').val();
+                const $el      = $(el),
+                    type       = $el.find(':selected').val(),
+                    handleType = $el.data('type'),
+                    $values    = $el.parent().siblings('[data-type-value]');
 
-                if (type) {
-                    result[$el.data('type')] = { type, value };
+                if (typeHandler.hasOwnProperty(type)) {
+                    result[handleType] = typeHandler[type]($values);
                 }
 
                 return result;
@@ -148,28 +189,40 @@
         };
     }
 
-    function setupSave () {
+    function setupSave (click, user) {
         $.content.find('[data-save]').on('click', () => {
             const values = {
-                title:   $.content.find('#title').val(),
-                nfa_id:  '', // get from /default_user,
-                trigger: getTrigger(),
-                action:  getAction()
+                click_id: click.id,
+                title:    $.content.find('#title').val(),
+                nfa_id:   user.id, // get from /default_user,
+                trigger:  getTrigger(),
+                action:   getAction()
+            };
+
+            if (values.trigger !== false && values.action !== false) {
+                $.ajax({
+                    url:         '/rule',
+                    type:        'POST',
+                    data:        JSON.stringify(values),
+                    dataType:    'json',
+                    contentType: 'application/json'
+                }).then(() => {
+                    page.redirect(`/dashboard/harvested/${click.id}/success`);
+                });
             }
-            console.log(values);
         });
     }
 
-    function setup (click) {
+    function setup (click, user) {
         $('select').material_select();
         trackable();
         typeable(click);
-        setupSave(click);
+        setupSave(click, user);
     }
 
     module.exports = {
         enter (ctx) {
-            const { click } = ctx,
+            const { click, user } = ctx,
                 { url } = click,
                 index = url.indexOf(utils.query(click.url)),
                 harvested   = Object.assign({}, click, {
@@ -179,7 +232,7 @@
                 });
 
             $.content.html(template(harvested));
-            setup(click);
+            setup(click, user);
         },
 
         exit (ctx, next) {
