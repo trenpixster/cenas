@@ -23,6 +23,8 @@ defmodule Hackathon.ApplyRuleInteractor do
       "dynamic-attribute" -> model.payload["attrs"][map["value"]]
       "location-path" -> extract_url_fragment(model.url, String.to_integer(map["value"]))
       "location-query" -> extract_query_param_value(model.url, map["value"])
+      "href-path" -> extract_url_fragment(model.payload["href"], map["value"])
+      "href-query" -> extract_url_fragment(model.payload["href"], map["value"])
     end
   end
 
