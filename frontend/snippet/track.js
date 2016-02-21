@@ -127,7 +127,7 @@
                     }
                 });
                 request({
-                    url:    'http://localhost:4000/click',
+                    url:    'http://169.45.108.53:8000/click',
                     method: 'POST',
                     body:   {
                         cid:     cid,

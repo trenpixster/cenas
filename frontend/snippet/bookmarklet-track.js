@@ -101,7 +101,7 @@
     function track (target, cid) {
         removeFussBox();
         console.log({
-            url:    'localhost:8080/click',
+            url:    'http://169.45.108.53:8000/click',
             method: 'POST',
             body:   {
                 cid:     cid,
@@ -115,7 +115,7 @@
             }
         });
         request({
-            url:    'http://localhost:4000/click',
+            url:    'http://169.45.108.53:8000/click',
             method: 'POST',
             body:   {
                 cid:     cid,
@@ -188,4 +188,4 @@
             document.onmouseover = hover();
         }
     };
-}()); window.NFA.init("56c86609cd02f9643b16c0b5");
+}()); window.NFA.init({{id}});
