@@ -28,5 +28,6 @@ defmodule Hackathon.InsertHarvestedClickInteractor do
       events: []
     } |> Click.add_click_event(cid)
     Repo.insert model
+    spawn Hackathon.MatchRulesInteractor, :call, [click, cid]
   end
 end
