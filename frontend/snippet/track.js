@@ -98,6 +98,15 @@
         return result;
     }
 
+    function getStyles (el) {
+        var css = window.getComputedStyle(el), result = {}, i;
+        for (i = 0; i < css.length; i++) {
+            result[css[i]] = css.getPropertyValue(css[i]);
+        }
+
+        return result;
+    }
+
     function track (cid) {
         return function (ev) {
             if (ev.clientX) { // non-human click
@@ -112,7 +121,8 @@
                         bookmarklet: false,
                         payload: {
                             target: target.outerHTML,
-                            attrs:  getAttributes(target.attributes)
+                            attrs:  getAttributes(target.attributes),
+                            styles: getStyles(target)
                         }
                     }
                 });
@@ -126,7 +136,8 @@
                         bookmarklet: false,
                         payload: {
                             target: target.outerHTML,
-                            attrs:  getAttributes(target.attributes)
+                            attrs:  getAttributes(target.attributes),
+                            styles: getStyles(target)
                         }
                     }
                 });
