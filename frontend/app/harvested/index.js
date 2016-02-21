@@ -9,11 +9,11 @@
             const $sibling = $(ev.target).parent().siblings('pre');
             $sibling.toggleClass('hide');
         });
-        $('.js-ignore-rule').on('click', (ev) => {
+        $('.js-ignore-click').on('click', (ev) => {
             ev.preventDefault();
-            const ruleId = $(ev.target).attr('data-rule-id');
+            const clickId = $(ev.target).attr('data-click-id');
             $(ev.target).addClass('disabled');
-            $.post('/click/ignore', { click_id: ruleId })
+            $.post('/click/ignore', { click_id: clickId })
              .then(() => {
                   $(ev.target).removeClass('disabled');
                   page.redirect('/dashboard/harvested');
