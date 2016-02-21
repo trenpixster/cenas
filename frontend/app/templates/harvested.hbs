@@ -1,12 +1,12 @@
 <div class="switch right">
     <label>
         Harvested
-        <input type="checkbox">
+        <input type="checkbox" {{#unless isHarvest}}checked{{/unless}}>
         <span class="lever"></span>
         Ignored
     </label>
 </div>
-<h1 class="primary-text title">Harvested Clicks</h1>
+<h1 class="primary-text title">{{title}}</h1>
 <div class="card-container">
     {{> ./partials/harvested-cards.hbs }}
 </div>
