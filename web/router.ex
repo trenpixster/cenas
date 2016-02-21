@@ -15,6 +15,7 @@ defmodule Hackathon.Router do
   scope "/", Hackathon do
     pipe_through :browser # Use the default browser stack
 
+
     get "/", PageController, :index
     get "/start", PageController, :start
     get "/default_user", UserController, :default_user
@@ -32,6 +33,8 @@ defmodule Hackathon.Router do
     get "/rules", RuleController, :index
     get "/rules/:rule_id", RuleController, :show
     put "/rules/:rule_id", RuleController, :update
+
+    get "/:nfa_id/snippet.min.js", PageController, :snippet
 
     options "/click", ClickController, :wtf
     options "/", ClickController, :wtf

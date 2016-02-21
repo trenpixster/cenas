@@ -22,8 +22,8 @@
     <div class="row">
       <h3>Purpose</h3>
       <p>Nowadays configuring <a href="https://developers.google.com/analytics/devguides/collection/analyticsjs/sending-hits#the_send_method" target="_blank">custom events for Google Analytics</a> is a laborious job which involves making changes to code and deploys to production whenever any changes are required.</p>
-      <p>With <b>No Fuss Analytics</b> we allow anyone who wants to track this events not to touch code. No engineering; No deploys; No inflexibility;</p>
-      <p>All you have to do is to embbed a <quote>&lt;script&gt;</quote> tag on your site ad start tracking clicks! You can even either use existing click events or easily create new rules for existing elements on your page via an awesome bookmarklet.</p>
+      <p>With <b>No Fuss Analytics</b> we allow anyone who wants to track this events not to touch code. No engineering; No deploys; No inflexibility; Save Engineering time and empower your marketing, product and UX teams.</p>
+      <p>All you have to do is to embbed a <code>&lt;script&gt;</code> tag on your site and start tracking clicks! You can even use existing click events or easily create new rules for existing elements on your page via an awesome bookmarklet.</p>
       <div class="center">
         <a href="/" class="btn-large waves-effect waves-light primary">Go to application</a>
       </div>
@@ -51,8 +51,8 @@
                <p>Technology ADD, Coding Geek, all-around curious with a special love for Elixir</p>
              </div>
              <div class="card-action">
-               <a href="https://twitter.com/trenpixster" target="_blank">Twitter</a>
-               <a href="https://github.com/trenpixster" target="_blank">Github</a>
+               <a href="https://twitter.com/trenpixster" class="primary-text" target="_blank">Twitter</a>
+               <a href="https://github.com/trenpixster" class="primary-text" target="_blank">Github</a>
              </div>
            </div>
          </div>
@@ -66,8 +66,8 @@
                <p>Proficient Fullstack Developer and all things Javascript</p>
              </div>
              <div class="card-action">
-               <a href="https://twitter.com/pcruz7s" target="_blank">Twitter</a>
-               <a href="https://github.com/pcruz7" target="_blank">Github</a>
+               <a href="https://twitter.com/pcruz7s" class="primary-text" target="_blank">Twitter</a>
+               <a href="https://github.com/pcruz7" class="primary-text" target="_blank">Github</a>
              </div>
            </div>
          </div>

@@ -8,4 +8,8 @@ defmodule Hackathon.PageController do
   def start(conn, _params) do
     render conn, "start.html"
   end
+
+  def snippet(conn, %{"nfa_id" => nfa_id}) do
+    render conn, "snippet.js", nfa_id: nfa_id
+  end
 end
