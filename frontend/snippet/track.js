@@ -30,7 +30,7 @@
     }
 
     function sendOrStore (click, data) {
-        if (click.href === '#' || click.target === '_blank') {
+        if (click.href === '#' || click.href === '' || click.target === '_blank') {
             makeRequest(data);
         } else {
             localStorage.setItem(nfaKey, JSON.stringify(data));
