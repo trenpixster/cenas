@@ -2,6 +2,7 @@
     'use strict';
 
     var nfaId;
+    var counter = 0;
 
     function noop () {}
 
@@ -120,9 +121,8 @@
     }
 
     function track (target, cid, clickable) {
-        removeFussBox();
         request({
-            url:    location.protocol + '//169.45.108.53:8000/click',
+            url:    '//trenpixster.ngrok.com/click',
             method: 'POST',
             body:   {
                 cid:     cid,
@@ -142,11 +142,19 @@
     }
 
     function removeFussBox(){
+        console.log("leaving");
         var noFussBox = document.getElementById("no__fuss__tracker");
-        noFussBox.parentNode.removeChild(noFussBox);
-        if(noFussBox.no__fuss__target){
-            noFussBox.no__fuss__target.style.backgroundColor = noFussBox.no__fuss__target.oldBg;
+        if(noFussBox) {
+            cleanBackground();
+            noFussBox.parentNode.removeChild(noFussBox);
         }
+    }
+
+    function cleanBackground () {
+      var noFussBox = document.getElementById("no__fuss__tracker");
+      if(noFussBox && noFussBox.no__fuss__target){
+          noFussBox.no__fuss__target.style.backgroundColor = noFussBox.no__fuss__target.oldBg;
+      }
     }
 
     function hover() {
@@ -154,17 +162,20 @@
         var target = ev.target,
             clickable = getClickableElement(target);
         if (!clickable) return;
+        cleanBackground();
         target.oldBg = target.style.backgroundColor;
         target.style.backgroundColor = "#EEDD00";
         renderBox(target, clickable);
-        target.onmouseleave = function(ev2) {
-            removeFussBox(ev2);
+        target.onmouseleave = function() {
+            removeFussBox();
         }
       }
     }
 
     function renderBox(target, clickable) {
-      if (document.getElementById("no__fuss__tracker")) return;
+      if (document.getElementById("no__fuss__tracker")) {
+          return;
+      }
       var box = document.createElement("div")
       box.id="no__fuss__tracker"
       box.style.fontFamily="Arial"
@@ -175,6 +186,7 @@
       box.style.backgroundColor="#004d40"
       box.style.color="#eee"
       box.style.padding="2px"
+      box.style.zIndex="9999"
       box.style.cursor="pointer"
       box.no__fuss__target = target;
       var ch1 = document.createElement("div");
@@ -185,6 +197,7 @@
       box.appendChild(ch2);
       box.onclick = function(ev) {
           var cid = readCookie('nfa') || guid();
+          removeFussBox();
           track(target, cid, clickable);
           ev.preventDefault();
       };

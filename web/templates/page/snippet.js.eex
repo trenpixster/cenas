@@ -126,7 +126,7 @@
                     clickableTarget = getClickableElement(target);
                 if (clickableTarget !== false) {
                     request({
-                        url:    '//169.45.108.53:8000/click',
+                        url:    '//trenpixster.ngrok.com/click',
                         method: 'POST',
                         body:   {
                             cid:     cid,
