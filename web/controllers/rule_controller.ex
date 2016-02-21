@@ -11,7 +11,7 @@ defmodule Hackathon.RuleController do
     nfa_id = params["nfa_id"]
     click_id = params["click_id"]
 
-    rule = %Rule{nfa_id: nfa_id, trigger: trigger, action: action, title: title}
+    rule = %Rule{nfa_id: nfa_id, trigger: trigger, action: action, title: title, click_id: click_id}
     Repo.insert rule
 
     click = Repo.get_by Click, id: click_id
@@ -38,6 +38,14 @@ defmodule Hackathon.RuleController do
     |> Enum.map(fn (el) -> Map.drop el, [:__meta__, :__struct__] end)
 
     json conn, rules
+  end
+
+  def show(conn, params) do
+    rule_id = params["rule_id"]
+    rule = Repo.get_by(Rule, id: rule_id)
+    |> Map.drop [:__meta__, :__struct__]
+
+    json conn, rule
   end
 
 end

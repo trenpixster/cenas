@@ -29,6 +29,7 @@ defmodule Hackathon.Router do
     delete "/rule", RuleController, :delete
     post "/rule", RuleController, :create
     get "/rules", RuleController, :index
+    get "/rules/:rule_id", RuleController, :show
 
     options "/click", ClickController, :wtf
     options "/", ClickController, :wtf
