@@ -1,5 +1,6 @@
 (function ($) {
     'use strict';
+    const page = require('page');
 
     function setup () {
         $('.preview').on('click', (ev) => {
@@ -7,6 +8,16 @@
 
             const $sibling = $(ev.target).parent().siblings('pre');
             $sibling.toggleClass('hide');
+        });
+        $('.js-ignore-rule').on('click', (ev) => {
+            ev.preventDefault();
+            const ruleId = $(ev.target).attr('data-rule-id');
+            $(ev.target).addClass('disabled');
+            $.post('/click/ignore', { click_id: ruleId })
+             .then(() => {
+                  $(ev.target).removeClass('disabled');
+                  page.redirect('/dashboard/harvested');
+            });
         });
     }
 
