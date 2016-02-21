@@ -3,8 +3,6 @@
 
     var nfaId;
 
-    function noop () {}
-
     function serializeParams (obj, prefix) {
         var str = [], p, k, v;
         for (p in obj) {
@@ -23,26 +21,30 @@
         return serialized === '' ? url : url + '?' + serialized;
     }
 
+    function createCORSRequest (method, url) {
+        var xhr = new XMLHttpRequest();
+        if ('withCredentials' in xhr) {
+            xhr.open(method, url, true);
+        } else if (typeof XDomainRequest !== 'undefined') {
+            xhr = new XDomainRequest();
+            xhr.open(method, url);
+        } else {
+            xhr = null;
+        }
+
+        return xhr;
+    }
+
     function request (options) {
         var method  = options.method,
             url     = options.url,
             params  = options.params,
             body    = options.body,
-            success = options.success || noop,
-            fail    = options.fail || noop,
-            xhr     = new XMLHttpRequest();
+            xhr     = createCORSRequest(method, getUrl(url, params), true);
 
-        xhr.open(method, getUrl(url, params), true);
-        xhr.onreadystatechange = function () {
-            if (this.readyState === 4) {
-                var message = JSON.parse(this.responseText);
-                if (this.status >= 200 && this.status < 400) {
-                    success(message);
-                } else {
-                    fail(message);
-                }
-            }
-        };
+        if (!xhr) {
+            return;
+        }
 
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.send(body ? JSON.stringify(body) : undefined);
@@ -126,7 +128,7 @@
                     clickableTarget = getClickableElement(target);
                 if (clickableTarget !== false) {
                     request({
-                        url:    location.protocol + '//localhost:4000/click',
+                        url:    '//localhost:4000/click',
                         method: 'POST',
                         body:   {
                             cid:     cid,
