@@ -5,7 +5,7 @@
     module.exports = function getHarvested (ctx, next) {
         const $card = $.content.find(`.card[data-harvested]`);
         $card.addClass('loading');
-        $.get('http://localhost:4000/clicks').then((clicks) => {
+        $.get('/clicks').then((clicks) => {
             ctx.clicks = clicks;
             state.save('clicks', clicks);
             $card.removeClass('loading');
