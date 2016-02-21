@@ -1,53 +1,49 @@
-(function () {
+(function (endpoint, nfaKey) {
     'use strict';
 
     var nfaId;
     var counter = 0;
 
-    function noop () {}
-
-    function serializeParams (obj, prefix) {
-        var str = [], p, k, v;
-        for (p in obj) {
-            if (obj.hasOwnProperty(p)) {
-                k = prefix ? prefix + '[' + p + ']' : p;
-                v = obj[p];
-                str.push(typeof v == 'object' ? serializeParams(v, k) :
-                    encodeURIComponent(k) + '=' + encodeURIComponent(v));
-            }
+    function createCORSRequest (method, url) {
+        var xhr = new XMLHttpRequest();
+        if ('withCredentials' in xhr) {
+            xhr.open(method, url, true);
+        } else if (typeof XDomainRequest !== 'undefined') {
+            xhr = new XDomainRequest();
+            xhr.open(method, url);
+        } else {
+            xhr = null;
         }
-        return str.join('&');
+
+        return xhr;
     }
 
-    function getUrl (url, params) {
-        var serialized = serializeParams(params);
-        return serialized === '' ? url : url + '?' + serialized;
-    }
+    function makeRequest (data) {
+        var xhr = createCORSRequest('POST', endpoint, true);
 
-    function request (options) {
-        var method  = options.method,
-            url     = options.url,
-            params  = options.params,
-            body    = options.body,
-            success = options.success || noop,
-            fail    = options.fail || noop,
-            xhr     = new XMLHttpRequest();
-
-        xhr.open(method, getUrl(url, params), true);
-        xhr.onreadystatechange = function () {
-            if (this.readyState === 4) {
-                var message = JSON.parse(this.responseText);
-                if (this.status >= 200 && this.status < 400) {
-                    success(message);
-                } else {
-                    fail(message);
-                }
-            }
-        };
+        if (!xhr) {
+            return;
+        }
 
         xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.send(body ? JSON.stringify(body) : undefined);
+        xhr.send(data ? (typeof data === 'string' ? data : JSON.stringify(data)) : undefined);
         xhr = null;
+    }
+
+    function sendOrStore (click, data) {
+        if (click.href === '#' || click.target === '_blank') {
+            makeRequest(data);
+        } else {
+            localStorage.setItem(nfaKey, JSON.stringify(data));
+        }
+    }
+
+    function checkStorage () {
+        var stored = localStorage.getItem(nfaKey);
+        if (stored !== null) {
+            makeRequest(stored);
+            localStorage.removeItem(nfaKey);
+        }
     }
 
     function writeCookie (cname, cvalue, exminutes) {
@@ -113,7 +109,7 @@
             return false;
         }
 
-        if (!target.onclick && target.nodeName !== 'A') {
+        if (!target.onclick && target.nodeName !== 'A' && target.nodeName !== 'BUTTON') {
             return getClickableElement(target.parentElement);
         }
 
@@ -121,8 +117,8 @@
     }
 
     function track (target, cid, clickable) {
-        request({
-            url:    '//trenpixster.ngrok.com/click',
+        sendOrStore(clickable, {
+            url:    endpoint,
             method: 'POST',
             body:   {
                 cid:     cid,
@@ -209,7 +205,8 @@
             var uuid = readCookie('nfa') || guid();
             writeCookie('nfa', uuid);
             nfaId = userId;
+            checkStorage();
             document.onmouseover = hover();
         }
     };
-}()); window.NFA.init("{{id}}");
+}('//169.45.108.53:8000/click', 'nfa')); window.NFA.init("{{id}}");
