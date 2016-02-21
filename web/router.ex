@@ -19,10 +19,13 @@ defmodule Hackathon.Router do
     get "/default_user", UserController, :default_user
     post "/update_tid", UserController, :update_tid
 
-    get "/clicks/:id", ClickController, :show
     get "/clicks", ClickController, :index
+    get "/clicks/ignored", ClickController, :index_ignored
+    post "/click/ignore", ClickController, :ignore
+    get "/clicks/:id", ClickController, :show
     post "/click", ClickController, :click
 
+    delete "/rule", RuleController, :delete
     post "/rule", RuleController, :create
     get "/rules", RuleController, :index
 

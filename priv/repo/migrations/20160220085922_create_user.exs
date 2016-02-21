@@ -6,6 +6,7 @@ defmodule Hackathon.Repo.Migrations.CreateUser do
       add :username, :string
       add :email, :string
       add :hash, :string
+      add :tid, :string
 
       timestamps
     end

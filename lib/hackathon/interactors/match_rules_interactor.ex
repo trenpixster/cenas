@@ -46,6 +46,7 @@ defmodule Hackathon.MatchRulesInteractor do
 
   defp apply_rule(true, action, model) do
     Logger.info "Will apply rule"
+    Repo.delete model
     ApplyRuleInteractor.call(action, model)
   end
 
