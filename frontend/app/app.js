@@ -8,6 +8,8 @@ require('./shim');
     const page = require('page'),
         state  = require('app/state');
 
+    page('*', require('app/middlewares/qs'));
+
     $.content = $('.content');
     page('/', require('app/dashboard'));
     page('/dashboard', require('app/dashboard'));
