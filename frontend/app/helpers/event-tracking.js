@@ -6,20 +6,12 @@
     function getValidTypes (click) {
         const types = [],
             { url } = click,
-            path = utils.pathname(url),
             hasData = Object.keys(click.payload.attrs).some((attr) => attr.indexOf('data-') === 0);
 
         if (hasData) {
             types.push({
                 name: 'From data attributes',
                 value: 'dynamic-attribute'
-            });
-        }
-
-        if (path !== '' && path !== '/') {
-            types.push({
-                name: 'From url path',
-                value: 'location-path'
             });
         }
 
@@ -38,9 +30,15 @@
             name: 'From element attributes',
             value: 'attribute'
         }, {
+            name:  'From clickable element path',
+            value: 'href-path'
+        }, {
+            name: 'From url path',
+            value: 'location-path'
+        }].concat(getValidTypes(click)).concat([{
             name: 'From fixed value',
             value: 'fixed'
-        }].concat(getValidTypes(click));
+        }]);
     }
 
     module.exports = function eventTracking (click) {

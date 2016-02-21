@@ -4,14 +4,34 @@
     const page = require('page'),
         chunks = require('lodash.chunk'),
         template = require('app/templates/harvested.hbs'),
-        cards = require('app/helpers/cards');
+        cardsTemplate = require('app/templates/harvested-cards.hbs'),
+        cards = require('app/helpers/cards'),
+        fetch = require('app/middlewares/harvested/get-harvested').fetch;
 
     let isHarvest;
 
     const getTitle = () => isHarvest ? 'Harvested Clicks' : 'Ignored Clicks';
+    const templateIt = (template, clicks) => template({ rows: chunks(clicks, 3), isHarvest, title: getTitle() });
+
+    function destroy () {
+        cards.destroy();
+        $.content.find('[data-ignore]').off('click');
+        $.content.find('[data-unignore]').off('click');
+        $.content.find('[data-refresh]').off('click');
+        $.content.find('input[type="checkbox"]').off('change');
+    }
 
     function setup () {
         cards.init();
+
+        $.content.find('[data-refresh]').on('click', (ev) => {
+            ev.preventDefault();
+            destroy();
+            fetch(!isHarvest).then((clicks) => {
+                $.content.find('.card-container').html(templateIt(cardsTemplate, clicks));
+            }).then(setup);
+        });
+
         $.content.find('input[type="checkbox"]').on('change', () => {
             isHarvest = !isHarvest;
             page.redirect(`/dashboard/harvested?view=${isHarvest ? 'harvested' : 'ignored'}`);
@@ -49,15 +69,12 @@
     module.exports = {
         enter (ctx) {
             isHarvest = ctx.query.view !== 'ignored';
-            $.content.html(template({ rows: chunks(ctx.clicks, 3), isHarvest, title: getTitle() }));
+            $.content.html(templateIt(template, ctx.clicks));
             setup();
         },
 
         exit (ctx, next) {
-            cards.destroy();
-            $.content.find('[data-ignore]').off('click');
-            $.content.find('[data-unignore]').off('click');
-            $.content.find('input[type="checkbox"]').off('change');
+            destroy();
             next();
         }
     };

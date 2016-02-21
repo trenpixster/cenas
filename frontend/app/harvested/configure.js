@@ -17,17 +17,22 @@
         });
     }
 
+    const validConfig = (values) => values.title !== false && values.trigger !== false && values.action !== false;
     function setupSave (click, user) {
         $.content.find('[data-save]').on('click', () => {
+            ['trigger', 'action'].forEach((el) => {
+                $.content.find(`[data-${el}-message]`).addClass('hide')
+            });
+
             const values = {
                 click_id: click.id,
-                title:    $.content.find('#title').val(),
+                title:    $.content.find('#title').val() || false,
                 nfa_id:   user.id, // get from /default_user,
                 trigger:  configuration.getTrigger(),
                 action:   configuration.getAction()
             };
 
-            if (values.trigger !== false && values.action !== false) {
+            if (validConfig(values)) {
                 $.ajax({
                     url:         '/rule',
                     type:        'POST',
@@ -36,6 +41,10 @@
                     contentType: 'application/json'
                 }).then(() => {
                     page.redirect(`/dashboard/harvested/${click.id}/success`);
+                });
+            } else {
+                ['title', 'trigger', 'action'].filter((el) => values[el] === false).forEach((el) => {
+                    $.content.find(`[data-${el}-message]`).removeClass('hide');
                 });
             }
         });
@@ -59,6 +68,7 @@
                     parsedUrl:  index > 0 ? url.slice(0, index) : url
                 });
 
+            console.log(click);
             $.content.html(template(harvested));
             setup(click, user);
         },

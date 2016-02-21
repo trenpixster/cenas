@@ -6,55 +6,10 @@
         Ignored
     </label>
 </div>
+<div class="right" style="margin-right: 2%">
+    <a href="#" data-refresh><i class="small material-icons grey-text">replay</i></a>
+</div>
 <h1 class="primary-text title">{{title}}</h1>
 <div class="card-container">
-    {{#each rows as |row|}}
-    <div class="row">
-        {{#each row as |click|}}
-        <div class="col s4">
-            <div class="card" data-id="{{id}}">
-                <div class="card-content">
-                    <strong class="card-title primary-text activator">Preview</strong>
-                    <span class="badge" style="margin-top: 2%">Total: {{size-of events}}</span>
-                    <div class="section center">
-                        {{#display click}}
-                            {{#unless hasStyles}}
-                            <span class="chip">No Design Available</span>
-                            {{/unless}}
-                            <div style="position: relative; padding: 5%">
-                            {{html}}
-                            </div>
-                        {{/display}}
-                    </div>
-                </div>
-                <div class="card-reveal">
-                    <span class="card-title grey-text text-darken-4 wrap">Preview<i class="material-icons right">close</i></span>
-                    <p class="badge wrap">{{url}}</p>
-                    <pre class="wrap">{{preview payload.target}}</pre>
-                </div>
-                <div class="card-action">
-                    {{#if ../../isHarvest}}
-                    <a href="/dashboard/harvested/{{id}}" class="primary-text">Configure</a>
-                    <a href="#" class="primary-text ignore" data-ignore="{{id}}" >Ignore</a>
-                    {{else}}
-                    <a href="#" class="primary-text unignore" data-unignore="{{id}}">Unignore</a>
-                    {{/if}}
-                </div>
-            </div>
-        </div>
-        {{/each}}
-    </div>
-    {{else}}
-        <div class="card-panel">
-            <div class="row center">
-                <i class="medium material-icons">thumb_up</i>
-                <h5 style="padding: 1%">No clicks to be configured !</h5>
-            </div>
-            <div class="divider"></div>
-            <div class="section center">
-                <a href="/dashboard/rules" class="btn waves-effect waves-light">Check your Rules<a>
-                <a href="/dashboard" class="primary-text" style="margin-left: 5%">Back to Dashboard</a>
-            </div>
-        </div>
-    {{/each}}
+    {{> "./harvested-cards.hbs" rows=rows }}
 </div>

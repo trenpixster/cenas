@@ -2,16 +2,19 @@
     'use strict';
 
     const state = require('app/state');
+
+    const fetch = (ignored) => $.get(ignored ? '/clicks/ignored' : '/clicks').done((clicks) => state.save('clicks', clicks));
+
     module.exports = function getHarvested (ctx, next) {
         const $card = $.content.find(`.card[data-harvested]`),
-            url = ctx.query.view === 'ignored' ? '/clicks/ignored' : '/clicks';
-
+            ignored = ctx.query.view === 'ignored';
         $card.addClass('loading');
-        $.get(url).then((clicks) => {
+        fetch(ignored).done((clicks) => {
             ctx.clicks = clicks;
-            state.save('clicks', clicks);
             $card.removeClass('loading');
             next();
         });
     };
+
+    module.exports.fetch = fetch;
 }(window.jQuery));

@@ -45,6 +45,13 @@
             }
         },
 
+        'href-path' (values) {
+            return {
+                type:  'href-path',
+                value: values.find('select > option:selected').val()
+            };
+        },
+
         'location-query' (values) {
             return {
                 type:  'location-query',
@@ -78,14 +85,21 @@
             })
         },
 
-        'location-path' (click) {
-            const path = utils.pathname(click.url);
+        'location-path' (click, path = '/path/to/path/you/get/somewhere') {
             return valueTemplate({
                 title: path,
                 types: path.split('/').slice(1).map((name, value) => {
-                    return { value, name };
+                    return {
+                        value,
+                        name: `Level ${value + 1}: ${name}`
+                    };
                 })
             });
+        },
+
+        'href-path' (click) {
+            const { clickableLink } = click.payload;
+            return this['location-path'](click, utils.pathname(clickableLink));
         },
 
         'location-query' (click) {
@@ -143,13 +157,8 @@
 
         getTrigger () {
             const $trigger = $.content.find('#trigger'),
-                $locationOnly = $trigger.find('#location-only');
-
-            return {
-                location_only: $locationOnly.is(':checked'),
-                location: $locationOnly.val(),
-                logic_operator: $.content.find('#operator').val(),
-                rules: Array.prototype.slice.call($trigger.find('#rules [type=checkbox]')).filter((el) => $(el).is(':checked')).map((el) => {
+                $locationOnly = $trigger.find('#location-only'),
+                rules = Array.prototype.slice.call($trigger.find('#rules [type=checkbox]')).filter((el) => $(el).is(':checked')).map((el) => {
                     const $el      = $(el),
                         $siblings  = $el.parent().siblings(),
                         $trackable = $siblings.find('[data-trackable]'),
@@ -159,15 +168,19 @@
                         operator:  $siblings.find('[data-operator]').val(),
                         value:     isCustom ? $($siblings[2]).val() : $trackable.val()
                     };
-                })
+                });
+
+            return rules.length === 0 ? false : {
+                location_only: $locationOnly.is(':checked'),
+                location: $locationOnly.val(),
+                logic_operator: $.content.find('#operator').val(),
+                rules
             };
         },
 
         getAction () {
-            const $types = $.content.find('[data-action-type-values]');
-            return {
-                type:    $.content.find('#action-type').val(),
-                payload: Array.prototype.slice.call($types.find('[data-type]')).reduce((result, el) => {
+            const $types = $.content.find('[data-action-type-values]'),
+                payload = Array.prototype.slice.call($types.find('[data-type]')).reduce((result, el) => {
                     const $el      = $(el),
                         type       = $el.find(':selected').val(),
                         handleType = $el.data('type'),
@@ -178,7 +191,11 @@
                     }
 
                     return result;
-                }, {})
+                }, {});
+
+            return Object.keys(payload).length === 0 ? false : {
+                type: $.content.find('#action-type').val(),
+                payload
             };
         }
     }

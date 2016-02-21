@@ -1,7 +1,8 @@
 (function ($) {
     'use strict';
 
-    const template = require('app/templates/rules.hbs'),
+    const chunks = require('lodash.chunk'),
+        template = require('app/templates/rules.hbs'),
         cards = require('app/helpers/cards'),
         page = require('page');
 
@@ -23,7 +24,7 @@
     module.exports = {
         enter (ctx) {
             const { rules } = ctx;
-            $.content.html(template({ rules }));
+            $.content.html(template({ rows: chunks(rules, 3) }));
             setup();
         },
 
