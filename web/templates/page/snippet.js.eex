@@ -126,7 +126,7 @@
                     clickableTarget = getClickableElement(target);
                 if (clickableTarget !== false) {
                     request({
-                        url:    location.protocol + '//169.45.108.53:8000/click',
+                        url:    '//169.45.108.53:8000/click',
                         method: 'POST',
                         body:   {
                             cid:     cid,
