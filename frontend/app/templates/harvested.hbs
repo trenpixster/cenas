@@ -8,5 +8,42 @@
 </div>
 <h1 class="primary-text title">{{title}}</h1>
 <div class="card-container">
-    {{> ./partials/harvested-cards.hbs }}
+    <div class="row">
+    {{#each clicks}}
+        <div class="col s4">
+            <div class="card" data-id="{{id}}">
+                <div class="card-content">
+                    <span class="card-title primary-text activator">{{highlight payload.attrs}}</span>
+                    <span class="badge" style="margin-top: 2%">Total: {{size-of events}}</span>
+                </div>
+                <div class="card-reveal">
+                    <span class="card-title grey-text text-darken-4">Preview<i class="material-icons right">close</i></span>
+                    <p class="badge" style="overflow-wrap: break-word;">From {{url}}</p>
+                    <pre class="wrap">{{preview payload.target}}</pre>
+                </div>
+                <div class="card-action">
+                    {{#if ../isHarvest}}
+                    <a href="/dashboard/harvested/{{id}}" class="primary-text">Configure</a>
+                    <a href="#" class="primary-text ignore" data-ignore="{{id}}" >Ignore</a>
+                    {{else}}
+                    <a href="#" class="primary-text unignore" data-unignore="{{id}}">Unignore</a>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+    {{else}}
+        <div class="card-panel">
+            <div class="row center">
+                <i class="medium material-icons">thumb_up</i>
+                <h5 style="padding: 1%">No clicks to be configured !</h5>
+            </div>
+            <div class="divider"></div>
+            <div class="section center">
+                <a href="/dashboard/rules" class="btn waves-effect waves-light">Check your Rules<a>
+                <a href="/dashboard" class="primary-text" style="margin-left: 5%">Back to Dashboard</a>
+            </div>
+        </div>
+    {{/each}}
+</div>
+
 </div>

@@ -42,7 +42,12 @@
         }).join('');
     });
 
-
+    Handlebars.registerHelper('has-default', (key, value, trackable, options) => {
+        if (trackable.hasDefaults && trackable.default[key] === value) {
+            return options.fn();
+        }
+        return;
+    });
 
     Handlebars.registerHelper('preview', (html) => {
         html = Handlebars.Utils.escapeExpression(html);

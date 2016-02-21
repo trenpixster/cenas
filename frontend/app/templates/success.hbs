@@ -2,11 +2,11 @@
 <div class="row">
     <div class="card-panel">
     <div class="section">
-        You have successfuly configured your harvested click.
+        {{message}}
     </div>
     <div class="divider"></div>
     <div class="section">
-        <a href="/dashboard/harvested" class="btn waves-effect waves-light">Continue</a>
-        <a href="/dashboard/tracked" class="primary-text" style="margin-left: 3%">Check Tracked</a>
+        <a href="{{continue.url}}" class="btn waves-effect waves-light">{{continue.title}}</a>
+        <a href="{{back.url}}" class="primary-text" style="margin-left: 3%">{{back.title}}</a>
     </div>
 </div>

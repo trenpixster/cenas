@@ -29,9 +29,21 @@
                 </div>
             </div>
             <div class="card-action">
-                <a href="/dashboard/rule/{{id}}" class="primary-text">Edit</a>
-                <a href="#" class="primary-text js-rule-delete" data-delete data-rule-id="{{id}}">Delete</a>
+                <a href="/dashboard/rules/{{id}}" class="primary-text">Edit</a>
+                <a href="#" class="primary-text" data-delete="{{id}}">Delete</a>
             </div>
+        </div>
+    </div>
+    {{else}}
+    <div class="card-panel">
+        <div class="row center">
+            <i class="medium material-icons">thumbs_up_down</i>
+            <h5 style="padding: 1%">No rules yet !</h5>
+        </div>
+        <div class="divider"></div>
+        <div class="section center">
+            <a href="/dashboard/harvested" class="btn waves-effect waves-light">Check your harvested clicks<a>
+            <a href="/dashboard" class="primary-text" style="margin-left: 5%">Back to Dashboard</a>
         </div>
     </div>
     {{/each}}

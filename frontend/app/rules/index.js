@@ -6,27 +6,30 @@
         page = require('page');
 
     function setup () {
-        $(document).on('click', '.js-rule-delete', (ev) => {
-            const ruleId = $(ev.target).attr('data-rule-id');
+        $.content.find('[data-delete]').on('click', (ev) => {
+            const $target = $(ev.target),
+                ruleId = $target.data('delete');
             ev.preventDefault();
             $.ajax({type: 'DELETE', url: '/rule', data: { rule_id: ruleId }})
              .then(() => {
-                  $(ev.target).removeClass('disabled');
-                  page.redirect('/dashboard/rules');
+                $target.removeClass('disabled');
+                page.redirect('/dashboard/rules');
             });
         });
+
+        cards.init();
     }
 
     module.exports = {
         enter (ctx) {
             const { rules } = ctx;
             $.content.html(template({ rules }));
-            cards.init();
+            setup();
         },
 
         exit (ctx, next) {
             cards.destroy();
-            $(document).off('click', '.js-rule-delete');
+            $.content.find('[data-delete]').off('click');
             next();
         }
     };
