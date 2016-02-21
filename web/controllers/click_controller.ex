@@ -38,6 +38,16 @@ defmodule Hackathon.ClickController do
     json conn, %{success: true}
   end
 
+  def unignore(conn, params) do
+    click_id = params["click_id"]
+
+    model = Repo.get_by Click, id: click_id
+    model = %Click{ model | ignored: false }
+
+    Repo.update model
+    json conn, %{success: true}
+  end
+
   def wtf(conn, _) do
     text conn, "ok"
   end
