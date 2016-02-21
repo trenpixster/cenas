@@ -2,7 +2,6 @@
     'use strict';
 
     var nfaId;
-    var counter = 0;
 
     function createCORSRequest (method, url) {
         var xhr = new XMLHttpRequest();
