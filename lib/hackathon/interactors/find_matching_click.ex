@@ -4,14 +4,15 @@ defmodule Hackathon.FindMatchingClick do
 
   def call(url, target) do
     unicorn = Click.unicornify(url, target)
-    format_response Repo.get_by(Click, unicorn: unicorn), unicorn
+    IO.puts "unicorn: #{unicorn}"
+    format_response(Repo.get_by(Click, unicorn: unicorn), unicorn)
   end
 
-  defp format_response(nil, unicorn) do
-    {false, unicorn}
+  defp format_response(response, unicorn) do
+    case response do
+        nil -> {false, unicorn}
+        model -> {true, model}
+    end
   end
 
-  defp format_response(model, _) do
-    {true, model}
-  end
 end

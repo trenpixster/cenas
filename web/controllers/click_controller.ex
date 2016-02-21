@@ -66,6 +66,7 @@ defmodule Hackathon.ClickController do
   end
 
   defp insert_click(cid, nfa_id, url, is_bookmarklet, payload) do
+    IO.puts "spawning InsertHarvestedClickInteractor"
     spawn Hackathon.InsertHarvestedClickInteractor, :call, [cid, nfa_id, url, is_bookmarklet, payload]
   end
 

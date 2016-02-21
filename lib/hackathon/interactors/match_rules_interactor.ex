@@ -5,6 +5,7 @@ defmodule Hackathon.MatchRulesInteractor do
   require Logger
 
   def call(model, cid) do
+    IO.puts "MatchRulesInteractor spawned!"
     Repo.all(Rule)
     |> Enum.map fn(rule) -> spawn Hackathon.MatchRulesInteractor, :process_rule, [model, rule, rule.trigger["location_only"]] end
   end
@@ -46,15 +47,20 @@ defmodule Hackathon.MatchRulesInteractor do
 
   defp apply_rule(true, action, model) do
     Logger.info "Will apply rule"
-    Repo.delete model
+    #Repo.delete model
     ApplyRuleInteractor.call(action, model)
   end
 
   defp validate_rule(model, rules, is_and) do
+    IO.puts "validate_rule"
     rules = rules |> Enum.map fn(rule) ->
       has_attribute = Map.has_key?(model.payload["attrs"], rule["attribute"])
+      #IO.puts "has_attribute: #{has_attribute} " <> model.payload["attrs"] <> "  " <> rule["attribute"]
+      #IO.puts "operator: " <> rule["operator"]
       if has_attribute do
         if rule["operator"] == "matches" do
+          #IO.puts "model payload attrs [rule attribute] => " <> model.payload["attrs"][rule["attribute"]]
+          #IO.puts "rule[value] " <> rule["value"]
           model.payload["attrs"][rule["attribute"]] == rule["value"]
         else
           String.contains? model.payload["attrs"][rule["attribute"]], rule["value"]
