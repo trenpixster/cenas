@@ -98,80 +98,45 @@
         return result;
     }
 
-    function track (target, cid) {
-        removeFussBox();
-        request({
-            url:    location.protocol + '//169.45.108.53:8000/click',
-            method: 'POST',
-            body:   {
-                cid:     cid,
-                nfa_id:  nfaId,
-                url:     location.href,
-                bookmarklet: true,
-                payload: {
-                    target: target.outerHTML,
-                    attrs:  getAttributes(target.attributes)
-                }
+    function getStyles (el) {
+        var css = window.getComputedStyle(el), result = {}, i;
+        for (i = 0; i < css.length; i++) {
+            result[css[i]] = css.getPropertyValue(css[i]);
+        }
+
+        return result;
+    }
+
+    function track (cid) {
+        return function (ev) {
+            if (ev.clientX) { // non-human click
+                var target = ev.target;
+                request({
+                    url:    location.protocol + '//169.45.108.53:8000/click',
+                    method: 'POST',
+                    body:   {
+                        cid:     cid,
+                        nfa_id:  nfaId,
+                        url:     location.href,
+                        bookmarklet: false,
+                        payload: {
+                            target: target.outerHTML,
+                            attrs:  getAttributes(target.attributes),
+                            styles: getStyles(target)
+                        }
+                    }
+                });
             }
-        });
-        alert("Element tracked, please visit No Fuss Analytics");
-    }
-
-    function removeFussBox(){
-        var noFussBox = document.getElementById("no__fuss__tracker");
-        noFussBox.parentNode.removeChild(noFussBox);
-        if(noFussBox.no__fuss__target){
-            noFussBox.no__fuss__target.style.backgroundColor = noFussBox.no__fuss__target.oldBg;
         }
-    }
-
-    function hover() {
-      return function(ev) {
-        var target = ev.target;
-        if ((!target.onclick && target.nodeName != "A") || target.id == "no__fuss__tracker") return;
-        target.oldBg = target.style.backgroundColor;
-        target.style.backgroundColor = "#EEDD00";
-        renderBox(target);
-        target.onmouseleave = function(ev2) {
-            removeFussBox(ev2);
-        }
-      }
-    }
-
-    function renderBox(target) {
-      if (document.getElementById("no__fuss__tracker")) return;
-      var box = document.createElement("div")
-      box.id="no__fuss__tracker"
-      box.style.fontFamily="Arial"
-      box.style.fontSize="8pt"
-      box.style.fontWeight="100"
-      box.style.textAlign="center"
-      box.style.width="150px"
-      box.style.backgroundColor="#004d40"
-      box.style.color="#eee"
-      box.style.padding="2px"
-      box.style.cursor="pointer"
-      box.no__fuss__target = target;
-      var ch1 = document.createElement("div");
-      ch1.appendChild(document.createTextNode("Track clicks on this element"));
-      var ch2 = document.createElement("div");
-      ch2.appendChild(document.createTextNode("via No Fuss Analytics"));
-      box.appendChild(ch1);
-      box.appendChild(ch2);
-      box.onclick = function(ev) {
-          var cid = readCookie('nfa') || guid();
-          track(target, cid);
-          ev.preventDefault();
-      };
-      target.appendChild(box);
     }
 
     window.NFA = {
         init: function (userId) {
             var uuid = readCookie('nfa') || guid();
             writeCookie('nfa', uuid);
+
             nfaId = userId;
-            document.onmouseover = hover();
+            document.onclick = track(uuid);
         }
     };
 }()); window.NFA.init("<%= @nfa_id %>");
