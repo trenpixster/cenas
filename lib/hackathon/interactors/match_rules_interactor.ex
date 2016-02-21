@@ -55,7 +55,7 @@ defmodule Hackathon.MatchRulesInteractor do
       has_attribute = Map.has_key?(model.payload["attrs"], rule["attribute"])
       if has_attribute do
         if rule["operator"] == "matches" do
-          model[rule["attribute"]] == rule["value"]
+          model.payload["attrs"][rule["attribute"]] == rule["value"]
         else
           String.contains? model.payload["attrs"][rule["attribute"]], rule["value"]
         end
