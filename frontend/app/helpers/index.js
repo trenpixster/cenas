@@ -1,4 +1,4 @@
-(function () {
+(function ($) {
     'use strict';
 
     const Handlebars = require('hbsfy/runtime');
@@ -53,4 +53,19 @@
         html = Handlebars.Utils.escapeExpression(html);
         return new Handlebars.SafeString(html);
     });
-}())
+
+    Handlebars.registerHelper('display', (click) => {
+        const { payload } = click,
+            srcRegex = /src="([\/a-zA-Z0-9-_]+)"/,
+            values   = payload.target.match(srcRegex),
+            path     = values === null ? '' : values[1];
+
+        if (values) {
+            const href = $('<a>', { href: click.url } )[0],
+                port = href.port ? `:${href.port}` : '';
+            payload.target = payload.target.replace(srcRegex, `src="${href.protocol}//${href.hostname}${port}${path}"`);
+        }
+
+        return new Handlebars.SafeString(payload.styles ? $(payload.target).css(payload.styles).prop('outerHTML') : payload.target);
+    })
+}(window.jQuery))

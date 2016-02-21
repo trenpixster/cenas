@@ -9,15 +9,18 @@
 <h1 class="primary-text title">{{title}}</h1>
 <div class="card-container">
     <div class="row">
-    {{#each clicks}}
+    {{#each clicks as |click|}}
         <div class="col s4">
             <div class="card" data-id="{{id}}">
                 <div class="card-content">
-                    <span class="card-title primary-text activator">{{highlight payload.attrs}}</span>
+                    <strong class="card-title primary-text activator">Preview</strong>
                     <span class="badge" style="margin-top: 2%">Total: {{size-of events}}</span>
+                    <div class="section center" style="position: relative; padding: 5%">
+                        {{display click}}
+                    </div>
                 </div>
                 <div class="card-reveal">
-                    <span class="card-title grey-text text-darken-4">Preview<i class="material-icons right">close</i></span>
+                    <span class="card-title grey-text text-darken-4">{{highlight payload.attrs}}<i class="material-icons right">close</i></span>
                     <p class="badge" style="overflow-wrap: break-word;">From {{url}}</p>
                     <pre class="wrap">{{preview payload.target}}</pre>
                 </div>

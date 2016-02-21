@@ -13,9 +13,14 @@
             });
 
             $(document).on('click', '.card-reveal', (ev) => {
-                const $card = $(ev.target).closest('.card');
+                const $card = $(ev.target).closest('.card'),
+                    $content = $card.find('.card-content'),
+                    $action = $card.find('.card-action');
+
                 setTimeout(() => {
-                    $card.velocity({ height: '151px' }, { duration: 300, queue: false, easing: 'easeInOutQuad' });
+                    $card.velocity({ height: `${$content.prop('scrollHeight') + $action.prop('scrollHeight')}}px` }, {
+                        duration: 300, queue: false, easing: 'easeInOutQuad'
+                    });
                 }, 300);
             });
         },
