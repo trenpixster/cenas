@@ -113,20 +113,16 @@
 
     function track (target, cid, clickable) {
         sendOrStore(clickable, {
-            url:    endpoint,
-            method: 'POST',
-            body:   {
-                cid:     cid,
-                nfa_id:  nfaId,
-                url:     location.href,
-                bookmarklet: true,
-                payload: {
-                    target:          target.outerHTML,
-                    clickableTarget: clickable.outerHTML,
-                    clickableLink:   clickable.href,
-                    attrs:           getAttributes(target.attributes),
-                    styles:          getStyles(target)
-                }
+            cid:     cid,
+            nfa_id:  nfaId,
+            url:     location.href,
+            bookmarklet: true,
+            payload: {
+                target:          target.outerHTML,
+                clickableTarget: clickable.outerHTML,
+                clickableLink:   clickable.href,
+                attrs:           getAttributes(target.attributes),
+                styles:          getStyles(target)
             }
         });
         alert("Element tracked, please visit No Fuss Analytics");
