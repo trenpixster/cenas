@@ -2,6 +2,7 @@
     'use strict';
 
     const page = require('page'),
+        chunks = require('lodash.chunk'),
         template = require('app/templates/harvested.hbs'),
         cards = require('app/helpers/cards');
 
@@ -48,7 +49,7 @@
     module.exports = {
         enter (ctx) {
             isHarvest = ctx.query.view !== 'ignored';
-            $.content.html(template({ clicks: ctx.clicks, isHarvest, title: getTitle() }));
+            $.content.html(template({ rows: chunks(ctx.clicks, 3), isHarvest, title: getTitle() }));
             setup();
         },
 

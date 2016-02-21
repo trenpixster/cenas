@@ -23,7 +23,12 @@
   },
   "browserify": {
     "transform": [
-      [ "hbsfy", { "t": true } ],
+      [
+        "hbsfy",
+        {
+          "t": true
+        }
+      ],
       "babelify",
       "aliasify"
     ]
@@ -55,6 +60,7 @@
   "dependencies": {
     "handlebars": "^4.0.5",
     "jquery": "^2.2.0",
+    "lodash.chunk": "^4.0.1",
     "materialize-css": "^0.97.5",
     "page": "^1.6.4"
   }
