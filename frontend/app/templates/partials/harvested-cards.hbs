@@ -12,8 +12,12 @@
                 <pre class="wrap">{{preview payload.target}}</pre>
             </div>
             <div class="card-action">
+                {{#if isHarvest}}
                 <a href="/dashboard/harvested/{{id}}" class="primary-text">Configure</a>
-                <a href="#" class="primary-text">Ignore</a>
+                <a href="#" data-click-id="{{id}}" class="js-ignore-click primary-text">Ignore</a>
+                {{else}}
+                <a href="#" data-click-id="{{id}}" class="js-ignore-click primary-text">Unignore</a>
+                {{/if}}
             </div>
         </div>
     </div>
