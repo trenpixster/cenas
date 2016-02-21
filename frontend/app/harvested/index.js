@@ -1,5 +1,6 @@
 (function ($) {
     'use strict';
+    const page = require('page');
 
     const template = require('app/templates/harvested.hbs'),
         cardsTemplate = require('app/templates/partials/harvested-cards.hbs'),
@@ -13,6 +14,16 @@
         $.get(url).then((clicks) => {
             $.content.find('.title').text(title);
             $.content.find('.card-container').html(cardsTemplate({ clicks }))
+        });
+        $('.js-ignore-click').on('click', (ev) => {
+            ev.preventDefault();
+            const clickId = $(ev.target).attr('data-click-id');
+            $(ev.target).addClass('disabled');
+            $.post('/click/ignore', { click_id: clickId })
+             .then(() => {
+                  $(ev.target).removeClass('disabled');
+                  page.redirect('/dashboard/harvested');
+            });
         });
     }
 

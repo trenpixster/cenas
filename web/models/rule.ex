@@ -4,6 +4,7 @@ defmodule Hackathon.Rule do
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "rule" do
     field :nfa_id, :string
+    field :click_id, :string
     field :title, :string
     field :trigger, :map
     field :action, :map

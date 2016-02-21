@@ -9,6 +9,7 @@ defmodule Hackathon.Click do
     field :events, {:array, :map}
     field :nfa_id, :string
     field :ignored, :boolean
+    field :archived, :boolean
     field :payload, :map
     timestamps
   end

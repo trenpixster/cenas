@@ -14,6 +14,7 @@ defmodule Hackathon.ClickController do
   def index_clicks(conn, is_ignored) do
     query = from c in Click,
               where: c.ignored == ^is_ignored,
+              where: c.archived == false,
              select: c
     clicks = Repo.all(query) |> Enum.map(fn(el) -> Map.drop(el, [:__meta__, :__struct__]) end)
     json conn, clicks
