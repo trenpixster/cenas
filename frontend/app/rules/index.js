@@ -28,8 +28,9 @@
             setup();
         },
 
-        exit () {
+        exit (ctx, next) {
             $(document).off('click', '.card-reveal');
+            next();
         }
     };
 }(window.jQuery))
