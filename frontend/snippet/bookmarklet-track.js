@@ -100,22 +100,8 @@
 
     function track (target, cid) {
         removeFussBox();
-        console.log({
-            url:    'http://169.45.108.53:8000/click',
-            method: 'POST',
-            body:   {
-                cid:     cid,
-                nfa_id:  nfaId,
-                url:     location.href,
-                bookmarklet: true,
-                payload: {
-                    target: target.outerHTML,
-                    attrs:  getAttributes(target.attributes)
-                }
-            }
-        });
         request({
-            url:    'http://169.45.108.53:8000/click',
+            url:    location.protocol + '//169.45.108.53:8000/click',
             method: 'POST',
             body:   {
                 cid:     cid,

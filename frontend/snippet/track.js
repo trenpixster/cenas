@@ -111,23 +111,8 @@
         return function (ev) {
             if (ev.clientX) { // non-human click
                 var target = ev.target;
-                console.log({
-                    url:    'localhost:8080/click',
-                    method: 'POST',
-                    body:   {
-                        cid:     cid,
-                        nfa_id:  nfaId,
-                        url:     location.href,
-                        bookmarklet: false,
-                        payload: {
-                            target: target.outerHTML,
-                            attrs:  getAttributes(target.attributes),
-                            styles: getStyles(target)
-                        }
-                    }
-                });
                 request({
-                    url:    'http://169.45.108.53:8000/click',
+                    url:    location.protocol + '//169.45.108.53:8000/click',
                     method: 'POST',
                     body:   {
                         cid:     cid,

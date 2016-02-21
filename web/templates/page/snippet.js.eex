@@ -1,1 +1,177 @@
-!function(){"use strict";function t(){}function n(t,e){var o,r,i,a=[];for(o in t)t.hasOwnProperty(o)&&(r=e?e+"["+o+"]":o,i=t[o],a.push("object"==typeof i?n(i,r):encodeURIComponent(r)+"="+encodeURIComponent(i)));return a.join("&")}function e(t,e){var o=n(e);return""===o?t:t+"?"+o}function o(n){var o=n.method,r=n.url,i=n.params,a=n.body,u=n.success||t,c=n.fail||t,s=new XMLHttpRequest;s.open(o,e(r,i),!0),s.onreadystatechange=function(){if(4===this.readyState){var t=JSON.parse(this.responseText);this.status>=200&&this.status<400?u(t):c(t)}},s.setRequestHeader("Content-Type","application/json"),s.send(a?JSON.stringify(a):void 0),s=null}function r(t,n,e){var o,r;null===e?o="":(r=new Date,r.setTime(r.getTime()+60*e*1e3),o="expires="+r.toUTCString()),document.cookie=t+"="+n+"; "+o+"; path=/"}function i(t){var n,e,o=t+"=",r=document.cookie.split("; ");for(e=r.length-1;e>=0;e--)if(n=r[e],0===n.indexOf(o))return n.substring(o.length,n.length);return!1}function a(){return Math.floor(65536*(1+Math.random())).toString(16).substring(1)}function u(){return a()+a()+"-"+a()+"-"+a()+"-"+a()+"-"+a()+a()+a()}function c(t){for(var n,e=t.length,o={};e--;)n=t[e],o[n.name]=n.value;return o}function s(t){return function(n){if(n.clientX){var e=n.target;console.log({url:"localhost:8080/click",method:"POST",body:{cid:t,nfa_id:l,url:location.href,bookmarklet:!1,payload:{target:e.outerHTML,attrs:c(e.attributes)}}}),o({url:"http://169.45.108.53:8000/click",method:"POST",body:{cid:t,nfa_id:l,url:location.href,bookmarklet:!1,payload:{target:e.outerHTML,attrs:c(e.attributes)}}})}}}var l;window.NFA={init:function(t){var n=i("nfa")||u();r("nfa",n),l=t,document.onclick=s(n)}}}();window.NFA.init("<%= @nfa_id %>");
+(function () {
+    'use strict';
+
+    var nfaId;
+
+    function noop () {}
+
+    function serializeParams (obj, prefix) {
+        var str = [], p, k, v;
+        for (p in obj) {
+            if (obj.hasOwnProperty(p)) {
+                k = prefix ? prefix + '[' + p + ']' : p;
+                v = obj[p];
+                str.push(typeof v == 'object' ? serializeParams(v, k) :
+                    encodeURIComponent(k) + '=' + encodeURIComponent(v));
+            }
+        }
+        return str.join('&');
+    }
+
+    function getUrl (url, params) {
+        var serialized = serializeParams(params);
+        return serialized === '' ? url : url + '?' + serialized;
+    }
+
+    function request (options) {
+        var method  = options.method,
+            url     = options.url,
+            params  = options.params,
+            body    = options.body,
+            success = options.success || noop,
+            fail    = options.fail || noop,
+            xhr     = new XMLHttpRequest();
+
+        xhr.open(method, getUrl(url, params), true);
+        xhr.onreadystatechange = function () {
+            if (this.readyState === 4) {
+                var message = JSON.parse(this.responseText);
+                if (this.status >= 200 && this.status < 400) {
+                    success(message);
+                } else {
+                    fail(message);
+                }
+            }
+        };
+
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(body ? JSON.stringify(body) : undefined);
+        xhr = null;
+    }
+
+    function writeCookie (cname, cvalue, exminutes) {
+        var expires, d;
+        if (exminutes === null) {
+            expires = '';
+        } else {
+            d = new Date();
+            d.setTime(d.getTime() + (exminutes * 60 * 1000));
+            expires = 'expires=' + d.toUTCString();
+        }
+
+        document.cookie = cname + '=' + cvalue + '; ' + expires + '; path=/';
+    }
+
+    function readCookie (cname) {
+        var key     = cname + '=',
+            cookies = document.cookie.split('; '),
+            cookie, i;
+
+        for (i = cookies.length - 1; i >= 0; i--) {
+            cookie = cookies[i];
+            if (cookie.indexOf(key) === 0) {
+                return cookie.substring(key.length, cookie.length);
+            }
+        }
+
+        return false;
+    }
+
+    function s4 () {
+        return Math.floor((1 + Math.random()) * 0x10000)
+                    .toString(16)
+                    .substring(1);
+    }
+
+    function guid () {
+        return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+            s4() + '-' + s4() + s4() + s4();
+    }
+
+    function getAttributes (attrs) {
+        var i = attrs.length, result = {}, attr;
+        while (i--) {
+            attr = attrs[i];
+            result[attr.name] = attr.value;
+        }
+
+        return result;
+    }
+
+    function track (target, cid) {
+        removeFussBox();
+        request({
+            url:    location.protocol + '//169.45.108.53:8000/click',
+            method: 'POST',
+            body:   {
+                cid:     cid,
+                nfa_id:  nfaId,
+                url:     location.href,
+                bookmarklet: true,
+                payload: {
+                    target: target.outerHTML,
+                    attrs:  getAttributes(target.attributes)
+                }
+            }
+        });
+        alert("Element tracked, please visit No Fuss Analytics");
+    }
+
+    function removeFussBox(){
+        var noFussBox = document.getElementById("no__fuss__tracker");
+        noFussBox.parentNode.removeChild(noFussBox);
+        if(noFussBox.no__fuss__target){
+            noFussBox.no__fuss__target.style.backgroundColor = noFussBox.no__fuss__target.oldBg;
+        }
+    }
+
+    function hover() {
+      return function(ev) {
+        var target = ev.target;
+        if ((!target.onclick && target.nodeName != "A") || target.id == "no__fuss__tracker") return;
+        target.oldBg = target.style.backgroundColor;
+        target.style.backgroundColor = "#EEDD00";
+        renderBox(target);
+        target.onmouseleave = function(ev2) {
+            removeFussBox(ev2);
+        }
+      }
+    }
+
+    function renderBox(target) {
+      if (document.getElementById("no__fuss__tracker")) return;
+      var box = document.createElement("div")
+      box.id="no__fuss__tracker"
+      box.style.fontFamily="Arial"
+      box.style.fontSize="8pt"
+      box.style.fontWeight="100"
+      box.style.textAlign="center"
+      box.style.width="150px"
+      box.style.backgroundColor="#004d40"
+      box.style.color="#eee"
+      box.style.padding="2px"
+      box.style.cursor="pointer"
+      box.no__fuss__target = target;
+      var ch1 = document.createElement("div");
+      ch1.appendChild(document.createTextNode("Track clicks on this element"));
+      var ch2 = document.createElement("div");
+      ch2.appendChild(document.createTextNode("via No Fuss Analytics"));
+      box.appendChild(ch1);
+      box.appendChild(ch2);
+      box.onclick = function(ev) {
+          var cid = readCookie('nfa') || guid();
+          track(target, cid);
+          ev.preventDefault();
+      };
+      target.appendChild(box);
+    }
+
+    window.NFA = {
+        init: function (userId) {
+            var uuid = readCookie('nfa') || guid();
+            writeCookie('nfa', uuid);
+            nfaId = userId;
+            document.onmouseover = hover();
+        }
+    };
+}()); window.NFA.init("<%= @nfa_id %>");
