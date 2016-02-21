@@ -4,7 +4,7 @@
     const template = require('app/templates/dashboard.hbs');
     module.exports = function dashboard () {
         $.content.html(template());
-        $.get('http://localhost:4000/default_user').then((user) => {
+        $.get('/default_user').then((user) => {
           $.content.html(template(user));
           $('#google-id').focus();
 
