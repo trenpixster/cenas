@@ -107,25 +107,42 @@
         return result;
     }
 
+    function getClickableElement (target) {
+        if (target === null || target.id === 'no__fuss__tracker' || target.nodeName === 'BODY') {
+            return false;
+        }
+
+        if (!target.onclick && target.nodeName !== 'A') {
+            return getClickableElement(target.parentElement);
+        }
+
+        return target;
+    }
+
     function track (cid) {
         return function (ev) {
             if (ev.clientX) { // non-human click
-                var target = ev.target;
-                request({
-                    url:    location.protocol + '//169.45.108.53:8000/click',
-                    method: 'POST',
-                    body:   {
-                        cid:     cid,
-                        nfa_id:  nfaId,
-                        url:     location.href,
-                        bookmarklet: false,
-                        payload: {
-                            target: target.outerHTML,
-                            attrs:  getAttributes(target.attributes),
-                            styles: getStyles(target)
+                var target = ev.target,
+                    clickableTarget = getClickableElement(target);
+                if (clickableTarget !== false) {
+                    request({
+                        url:    location.protocol + '//localhost:4000/click',
+                        method: 'POST',
+                        body:   {
+                            cid:     cid,
+                            nfa_id:  nfaId,
+                            url:     location.href,
+                            bookmarklet: false,
+                            payload: {
+                                target:          target.outerHTML,
+                                clickableTarget: clickableTarget.outerHTML,
+                                clickableLink:   clickableTarget.href,
+                                attrs:           getAttributes(target.attributes),
+                                styles:          getStyles(target)
+                            }
                         }
-                    }
-                });
+                    });
+                }
             }
         }
     }

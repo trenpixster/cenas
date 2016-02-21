@@ -98,7 +98,28 @@
         return result;
     }
 
-    function track (target, cid) {
+    function getStyles (el) {
+        var css = window.getComputedStyle(el), result = {}, i;
+        for (i = 0; i < css.length; i++) {
+            result[css[i]] = css.getPropertyValue(css[i]);
+        }
+
+        return result;
+    }
+
+    function getClickableElement (target) {
+        if (target === null || target.id === 'no__fuss__tracker' || target.nodeName === 'BODY') {
+            return false;
+        }
+
+        if (!target.onclick && target.nodeName !== 'A') {
+            return getClickableElement(target.parentElement);
+        }
+
+        return target;
+    }
+
+    function track (target, cid, clickable) {
         removeFussBox();
         request({
             url:    location.protocol + '//169.45.108.53:8000/click',
@@ -109,8 +130,11 @@
                 url:     location.href,
                 bookmarklet: true,
                 payload: {
-                    target: target.outerHTML,
-                    attrs:  getAttributes(target.attributes)
+                    target:          target.outerHTML,
+                    clickableTarget: clickableTarget.outerHTML,
+                    clickableLink:   clickableTarget.href,
+                    attrs:           getAttributes(target.attributes),
+                    styles:          getStyles(target)
                 }
             }
         });
@@ -127,18 +151,19 @@
 
     function hover() {
       return function(ev) {
-        var target = ev.target;
-        if ((!target.onclick && target.nodeName != "A") || target.id == "no__fuss__tracker") return;
+        var target = ev.target,
+            clickable = getClickableElement(target);
+        if (!clickable) return;
         target.oldBg = target.style.backgroundColor;
         target.style.backgroundColor = "#EEDD00";
-        renderBox(target);
+        renderBox(target, clickable);
         target.onmouseleave = function(ev2) {
             removeFussBox(ev2);
         }
       }
     }
 
-    function renderBox(target) {
+    function renderBox(target, clickable) {
       if (document.getElementById("no__fuss__tracker")) return;
       var box = document.createElement("div")
       box.id="no__fuss__tracker"
@@ -160,7 +185,7 @@
       box.appendChild(ch2);
       box.onclick = function(ev) {
           var cid = readCookie('nfa') || guid();
-          track(target, cid);
+          track(target, cid, clickable);
           ev.preventDefault();
       };
       target.appendChild(box);
