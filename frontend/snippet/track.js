@@ -1,25 +1,7 @@
-(function () {
+(function (endpoint, nfaKey) {
     'use strict';
 
     var nfaId;
-
-    function serializeParams (obj, prefix) {
-        var str = [], p, k, v;
-        for (p in obj) {
-            if (obj.hasOwnProperty(p)) {
-                k = prefix ? prefix + '[' + p + ']' : p;
-                v = obj[p];
-                str.push(typeof v == 'object' ? serializeParams(v, k) :
-                    encodeURIComponent(k) + '=' + encodeURIComponent(v));
-            }
-        }
-        return str.join('&');
-    }
-
-    function getUrl (url, params) {
-        var serialized = serializeParams(params);
-        return serialized === '' ? url : url + '?' + serialized;
-    }
 
     function createCORSRequest (method, url) {
         var xhr = new XMLHttpRequest();
@@ -35,20 +17,32 @@
         return xhr;
     }
 
-    function request (options) {
-        var method  = options.method,
-            url     = options.url,
-            params  = options.params,
-            body    = options.body,
-            xhr     = createCORSRequest(method, getUrl(url, params), true);
+    function makeRequest (data) {
+        var xhr = createCORSRequest('POST', endpoint, true);
 
         if (!xhr) {
             return;
         }
 
         xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.send(body ? JSON.stringify(body) : undefined);
+        xhr.send(data ? (typeof data === 'string' ? data : JSON.stringify(data)) : undefined);
         xhr = null;
+    }
+
+    function sendOrStore (click, data) {
+        if (click.href === '#' || click.target === '_blank') {
+            makeRequest(data);
+        } else {
+            localStorage.setItem(nfaKey, JSON.stringify(data));
+        }
+    }
+
+    function checkStorage () {
+        var stored = localStorage.getItem(nfaKey);
+        if (stored !== null) {
+            makeRequest(stored);
+            localStorage.removeItem(nfaKey);
+        }
     }
 
     function writeCookie (cname, cvalue, exminutes) {
@@ -114,7 +108,7 @@
             return false;
         }
 
-        if (!target.onclick && target.nodeName !== 'A') {
+        if (!target.onclick && target.nodeName !== 'A' && target.nodeName !== 'BUTTON') {
             return getClickableElement(target.parentElement);
         }
 
@@ -127,21 +121,17 @@
                 var target = ev.target,
                     clickableTarget = getClickableElement(target);
                 if (clickableTarget !== false) {
-                    request({
-                        url:    '//localhost:4000/click',
-                        method: 'POST',
-                        body:   {
-                            cid:     cid,
-                            nfa_id:  nfaId,
-                            url:     location.href,
-                            bookmarklet: false,
-                            payload: {
-                                target:          target.outerHTML,
-                                clickableTarget: clickableTarget.outerHTML,
-                                clickableLink:   clickableTarget.href,
-                                attrs:           getAttributes(target.attributes),
-                                styles:          getStyles(target)
-                            }
+                    sendOrStore(clickableTarget, {
+                        cid:     cid,
+                        nfa_id:  nfaId,
+                        url:     location.href,
+                        bookmarklet: false,
+                        payload: {
+                            target:          target.outerHTML,
+                            clickableTarget: clickableTarget.outerHTML,
+                            clickableLink:   clickableTarget.href,
+                            attrs:           getAttributes(target.attributes),
+                            styles:          getStyles(target)
                         }
                     });
                 }
@@ -155,7 +145,8 @@
             writeCookie('nfa', uuid);
 
             nfaId = userId;
+            checkStorage();
             document.onclick = track(uuid);
         }
     };
-}());
+}('//localhost:4000/click', 'nfa'));
