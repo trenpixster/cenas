@@ -23,7 +23,7 @@
   },
   "browserify": {
     "transform": [
-      "hbsfy",
+      [ "hbsfy", { "t": true } ],
       "babelify",
       "aliasify"
     ]
