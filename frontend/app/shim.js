@@ -8,4 +8,7 @@
     require('materialize/forms');
     require('materialize/waves');
     require('materialize/dropdown');
+    require('materialize/collapsible');
+    require('materialize/cards');
+    require('materialize/velocity.min');
 }());
