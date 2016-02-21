@@ -15,13 +15,20 @@
                 <div class="card-content">
                     <strong class="card-title primary-text activator">Preview</strong>
                     <span class="badge" style="margin-top: 2%">Total: {{size-of events}}</span>
-                    <div class="section center" style="position: relative; padding: 5%">
-                        {{display click}}
+                    <div class="section center">
+                        {{#display click}}
+                            {{#unless hasStyles}}
+                            <span class="chip">No Design Available</span>
+                            {{/unless}}
+                            <div style="position: relative; padding: 5%">
+                            {{html}}
+                            </div>
+                        {{/display}}
                     </div>
                 </div>
                 <div class="card-reveal">
-                    <span class="card-title grey-text text-darken-4">{{highlight payload.attrs}}<i class="material-icons right">close</i></span>
-                    <p class="badge" style="overflow-wrap: break-word;">From {{url}}</p>
+                    <span class="card-title grey-text text-darken-4 wrap">Preview<i class="material-icons right">close</i></span>
+                    <p class="badge wrap">{{url}}</p>
                     <pre class="wrap">{{preview payload.target}}</pre>
                 </div>
                 <div class="card-action">

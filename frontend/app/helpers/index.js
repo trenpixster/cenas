@@ -54,11 +54,12 @@
         return new Handlebars.SafeString(html);
     });
 
-    Handlebars.registerHelper('display', (click) => {
+    Handlebars.registerHelper('display', (click, options) => {
         const { payload } = click,
-            srcRegex = /src="([\/a-zA-Z0-9-_]+)"/,
+            srcRegex = /src="([\/a-zA-Z0-9-_\.]+)"/,
             values   = payload.target.match(srcRegex),
-            path     = values === null ? '' : values[1];
+            path     = values === null ? '' : values[1],
+            hasStyles = payload.styles && !Array.isArray(payload.styles);
 
         if (values) {
             const href = $('<a>', { href: click.url } )[0],
@@ -66,6 +67,9 @@
             payload.target = payload.target.replace(srcRegex, `src="${href.protocol}//${href.hostname}${port}${path}"`);
         }
 
-        return new Handlebars.SafeString(payload.styles ? $(payload.target).css(payload.styles).prop('outerHTML') : payload.target);
+        return options.fn({
+            html: new Handlebars.SafeString(hasStyles ? $(payload.target).css(payload.styles).prop('outerHTML') : payload.target),
+            hasStyles
+        });
     })
 }(window.jQuery))
