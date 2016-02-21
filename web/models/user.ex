@@ -11,7 +11,7 @@ defmodule Hackathon.User do
     timestamps
   end
 
-  @required_fields ~w(username email hash)
+  @required_fields ~w(username email hash tid)
   @optional_fields ~w()
 
   @doc """

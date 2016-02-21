@@ -21,6 +21,7 @@ defmodule Hackathon.InsertHarvestedClickInteractor do
       url: url,
       cid: cid,
       ignored: false,
+      archived: false,
       unicorn: unicorn,
       payload: payload,
       events: []

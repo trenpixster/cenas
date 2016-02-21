@@ -2,6 +2,7 @@ defmodule Hackathon.RuleController do
   use Hackathon.Web, :controller
   alias Hackathon.Repo
   alias Hackathon.Rule
+  alias Hackathon.Click
 
   def create(conn, params) do
     title = params["title"]
@@ -10,17 +11,24 @@ defmodule Hackathon.RuleController do
     nfa_id = params["nfa_id"]
     click_id = params["click_id"]
 
-    model = %Rule{nfa_id: nfa_id, trigger: trigger, action: action, title: title}
-    Repo.insert model
+    rule = %Rule{nfa_id: nfa_id, trigger: trigger, action: action, title: title}
+    Repo.insert rule
 
-    Repo.delete Click, id: click_id
+    click = Repo.get_by Click, id: click_id
+    Repo.update %Click{click | archived: true}
 
-    json conn, (model |> Map.drop [:__meta__, :__struct__])
+    json conn, (rule |> Map.drop [:__meta__, :__struct__])
   end
 
   def delete(conn, params) do
     rule_id = params["rule_id"]
-    Repo.delete %Rule{ id: rule_id }
+    rule = Repo.get_by Rule, id: rule_id
+
+    click_id = rule.click_id
+    click = Repo.get_by Click, id: click_id
+
+    Repo.delete rule
+    Repo.update %Click{click | archived: false}
 
     json conn, %{success: true}
   end
