@@ -30,11 +30,7 @@
     }
 
     function sendOrStore (click, data) {
-        if (click.href === '#' || click.target === '_blank') {
-            makeRequest(data);
-        } else {
-            localStorage.setItem(nfaKey, JSON.stringify(data));
-        }
+        makeRequest(data); // yaay, them storing
     }
 
     function checkStorage () {
@@ -137,7 +133,6 @@
     }
 
     function removeFussBox(){
-        console.log("leaving");
         var noFussBox = document.getElementById("no__fuss__tracker");
         if(noFussBox) {
             cleanBackground();
