@@ -55,6 +55,11 @@ defmodule Hackathon.ClickController do
   end
 
   def click(conn, params) do
+    spawn __MODULE__, :process_click, [params]
+    json conn, %{success: true}
+  end
+
+  def process_click(params) do
     cid = params["cid"]
     nfa_id = params["nfa_id"]
     is_bookmarklet = params["bookmarklet"]
@@ -62,8 +67,6 @@ defmodule Hackathon.ClickController do
     payload = params["payload"]
 
     insert_click(cid, nfa_id, url, is_bookmarklet, payload)
-
-    json conn, %{success: true}
   end
 
   defp insert_click(cid, nfa_id, url, is_bookmarklet, payload) do
