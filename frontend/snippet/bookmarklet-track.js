@@ -131,8 +131,8 @@
                 bookmarklet: true,
                 payload: {
                     target:          target.outerHTML,
-                    clickableTarget: clickableTarget.outerHTML,
-                    clickableLink:   clickableTarget.href,
+                    clickableTarget: clickable.outerHTML,
+                    clickableLink:   clickable.href,
                     attrs:           getAttributes(target.attributes),
                     styles:          getStyles(target)
                 }
