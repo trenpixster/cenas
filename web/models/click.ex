@@ -8,6 +8,7 @@ defmodule Hackathon.Click do
     field :cid, :string
     field :events, {:array, :map}
     field :nfa_id, :string
+    field :is_bookmarklet, :boolean
     field :ignored, :boolean
     field :archived, :boolean
     field :payload, :map

@@ -2,9 +2,10 @@
     <div class="nav-wrapper primary-color">
         <a href="#" class="brand-logo">No Fuss Analytics</a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li><a href="/start">Getting Started</a></li>
             <li><a href="/dashboard">Dashboard</a>
             <li><a href="/dashboard/harvested">Harvested</a></li>
-            <li><a href="/dashboard/tracked">Tracked</a></li>
+            <li><a href="/dashboard/rules">Rules</a></li>
         </ul>
     </div>
 </nav>

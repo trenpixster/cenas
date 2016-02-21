@@ -15,7 +15,9 @@ defmodule Hackathon.ClickController do
     query = from c in Click,
               where: c.ignored == ^is_ignored,
               where: c.archived == false,
-             select: c
+              order_by: [desc: :is_bookmarklet],
+              order_by: c.updated_at,
+              select: c
     clicks = Repo.all(query) |> Enum.map(fn(el) -> Map.drop(el, [:__meta__, :__struct__]) end)
     json conn, clicks
   end
@@ -55,16 +57,17 @@ defmodule Hackathon.ClickController do
   def click(conn, params) do
     cid = params["cid"]
     nfa_id = params["nfa_id"]
+    is_bookmarklet = params["bookmarklet"]
     url = params["url"]
     payload = params["payload"]
 
-    insert_click(cid, nfa_id, url, payload)
+    insert_click(cid, nfa_id, url, is_bookmarklet, payload)
 
     json conn, %{success: true}
   end
 
-  defp insert_click(cid, nfa_id, url, payload) do
-    { :ok, click } = Hackathon.InsertHarvestedClickInteractor.call(cid, nfa_id, url, payload)
+  defp insert_click(cid, nfa_id, url, is_bookmarklet, payload) do
+    { :ok, click } = Hackathon.InsertHarvestedClickInteractor.call(cid, nfa_id, url, is_bookmarklet, payload)
     spawn Hackathon.MatchRulesInteractor, :call, [click, cid]
   end
 
