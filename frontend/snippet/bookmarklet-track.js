@@ -199,4 +199,4 @@
             document.onmouseover = hover();
         }
     };
-}()); window.NFA.init({{id}});
+}()); window.NFA.init("{{id}}");
