@@ -109,6 +109,7 @@
                         cid:     cid,
                         nfa_id:  nfaId,
                         url:     location.href,
+                        bookmarklet: false,
                         payload: {
                             target: target.outerHTML,
                             attrs:  getAttributes(target.attributes)
@@ -122,6 +123,7 @@
                         cid:     cid,
                         nfa_id:  nfaId,
                         url:     location.href,
+                        bookmarklet: false,
                         payload: {
                             target: target.outerHTML,
                             attrs:  getAttributes(target.attributes)
