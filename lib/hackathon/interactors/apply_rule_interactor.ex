@@ -3,9 +3,13 @@ defmodule Hackathon.ApplyRuleInteractor do
 
   def call(action, model) do
     v = 1
-    ec = extract_values(action["category"], model)#
+    IO.puts "doing ec:"
+    ec = extract_values(action["category"], model)
+    IO.puts "doing ea:"
     ea = extract_values(action["action"], model)
+    IO.puts "doing el:"
     el = extract_values(action["label"], model)
+    IO.puts "doing ev:"
     ev = String.to_integer(extract_values(action["value"], model))
     cid = model.cid
     tid = get_tid_from_user(model.nfa_id)
@@ -23,8 +27,8 @@ defmodule Hackathon.ApplyRuleInteractor do
       "dynamic-attribute" -> model.payload["attrs"][map["value"]]
       "location-path" -> extract_url_fragment(model.url, String.to_integer(map["value"]))
       "location-query" -> extract_query_param_value(model.url, map["value"])
-      "href-path" -> extract_url_fragment(model.payload["href"], map["value"])
-      "href-query" -> extract_url_fragment(model.payload["href"], map["value"])
+      "href-path" -> extract_url_fragment(model.payload["clickableLink"], String.to_integer(map["value"]))
+      "href-query" -> extract_url_fragment(model.payload["clickableLink"], map["value"])
     end
   end
 
@@ -44,6 +48,9 @@ defmodule Hackathon.ApplyRuleInteractor do
   end
 
   defp extract_url_fragment(url, chunk) do
+    IO.puts "url chunk"
+    IO.puts url
+    IO.puts chunk
     String.replace(url, "://", "")
     |> String.split("/")
     |> Enum.at(chunk)
