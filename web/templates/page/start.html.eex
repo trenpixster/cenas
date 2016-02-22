@@ -22,7 +22,7 @@
     <div class="row">
       <h3>Pitch/Purpose</h3>
       <p>Nowadays configuring <a href="https://developers.google.com/analytics/devguides/collection/analyticsjs/sending-hits#the_send_method" target="_blank">custom events for Google Analytics</a> is a laborious job which involves making changes to code and deploys to production whenever any changes are required.
-      In one sentence, Google Analytics sourcing made incredibly easy. Really.</p>
+      In one sentence, No Fuss Analytics is Google Analytics sourcing made incredibly easy. Really.</p>
 
       <p>With No Fuss Analytics we allow anyone who wants to track these events not to touch code. No engineering; No deploys; No inflexibility; Save Engineering time and empower your Marketing, Product and UX teams.</p>
 
