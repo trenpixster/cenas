@@ -69,7 +69,10 @@
         }
 
         return options.fn({
-            html: new Handlebars.SafeString(hasStyles ? $(payload.target).css(Object.assign(payload.styles, { cursor: 'default' })).prop('outerHTML') : payload.target),
+            html: new Handlebars.SafeString(hasStyles ? $(payload.target).css(Object.assign(payload.styles, {
+                cursor: 'default',
+                outline: 'none'
+            })).prop('outerHTML') : payload.target),
             hasStyles
         });
     })

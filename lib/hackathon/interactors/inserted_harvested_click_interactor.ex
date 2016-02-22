@@ -6,8 +6,6 @@ defmodule Hackathon.InsertHarvestedClickInteractor do
   def call(cid, nfa_id, url, is_bookmarklet, payload) do
     model = FindMatchingClick.call(url, payload["target"])
     |> consume_click(cid, nfa_id, url, is_bookmarklet, payload)
-
-    spawn Hackathon.MatchRulesInteractor, :call, [model, cid]
   end
 
   def consume_click({true, model}, cid, _, _, _, _) do
