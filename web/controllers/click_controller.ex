@@ -1,13 +1,14 @@
 defmodule Hackathon.ClickController do
-  alias Hackathon.Repo
-  alias Hackathon.Click
   use Hackathon.Web, :controller
+  require Logger
 
-  def index(conn, params) do
+  alias Hackathon.{Repo, Click, MatchRulesInteractor, InsertHarvestedClickInteractor}
+
+  def index(conn, _) do
     index_clicks(conn, false)
   end
 
-  def index_ignored(conn, params) do
+  def index_ignored(conn, _) do
     index_clicks(conn, true)
   end
 
@@ -61,13 +62,29 @@ defmodule Hackathon.ClickController do
     url = params["url"]
     payload = params["payload"]
 
-    insert_click(cid, nfa_id, url, is_bookmarklet, payload)
+    spawn __MODULE__, :process_click, [cid, nfa_id, url, is_bookmarklet, payload]
     json conn, %{success: true}
   end
 
-  defp insert_click(cid, nfa_id, url, is_bookmarklet, payload) do
-    IO.puts "spawning InsertHarvestedClickInteractor"
-    spawn Hackathon.InsertHarvestedClickInteractor, :call, [cid, nfa_id, url, is_bookmarklet, payload]
+  def process_click(cid, nfa_id, url, is_bookmarklet, payload) do
+    model = %Click{
+      nfa_id: nfa_id,
+      url: url,
+      cid: cid,
+      ignored: false,
+      is_bookmarklet: is_bookmarklet,
+      archived: false,
+      payload: payload,
+      events: []
+    }
+
+    should_skip_model_creation = MatchRulesInteractor.call(model)
+    |> Enum.reduce(false, fn(el, acc) -> (el || acc) end)
+
+    unless should_skip_model_creation do
+      Logger.info "Didn't match any rule, creating"
+      InsertHarvestedClickInteractor.call(cid, nfa_id, url, is_bookmarklet, payload)
+    end
   end
 
 end

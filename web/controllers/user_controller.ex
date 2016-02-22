@@ -3,9 +3,9 @@ defmodule Hackathon.UserController do
   alias Hackathon.Repo
   alias Hackathon.User
 
-  def default_user(conn, params) do
+  def default_user(conn, _) do
     case get_user do
-      nil -> create_user(conn)
+      nil -> create_user
       _   -> true
     end
     json conn, get_user_json
@@ -28,14 +28,14 @@ defmodule Hackathon.UserController do
     get_user |> Map.drop [:__meta__, :__struct__]
   end
 
-  defp create_user(conn) do
+  defp create_user do
     user = %User{
       email: "default@example.com",
       hash: "lolx",
       tid: "UA-57696322-2",
       username: "Rhino Soldier"
     }
-    {:ok, model } = Repo.insert user
+    {:ok, _ } = Repo.insert user
   end
 
 end
