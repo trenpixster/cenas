@@ -103,8 +103,7 @@
         if (target === null || target.id === 'no__fuss__tracker' || target.nodeName === 'BODY') {
             return false;
         }
-
-        if (!target.onclick && target.nodeName !== 'A' && target.nodeName !== 'BUTTON') {
+        if ( !target.onclick && target.nodeName !== 'A' && target.nodeName !== 'BUTTON') {
             return getClickableElement(target.parentElement);
         }
 
@@ -152,7 +151,7 @@
         target.oldBg = target.style.backgroundColor;
         target.style.backgroundColor = "#EEDD00";
         renderBox(target, clickable);
-        target.onmouseleave = function() {
+        clickable.onmouseleave = function() {
             removeFussBox();
         }
       }
@@ -187,7 +186,7 @@
           track(target, cid, clickable);
           ev.preventDefault();
       };
-      target.appendChild(box);
+      clickable.appendChild(box);
     }
 
     window.NFA = {
