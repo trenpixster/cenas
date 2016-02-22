@@ -52,7 +52,6 @@ defmodule Hackathon.MatchRulesInteractor do
   end
 
   defp validate_rule(model, rules, is_and) do
-    IO.puts "validate_rule"
     rules = rules |> Enum.map fn(rule) ->
       has_attribute = Map.has_key?(model.payload["attrs"], rule["attribute"])
       if has_attribute do
