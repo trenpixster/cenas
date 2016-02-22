@@ -18,12 +18,11 @@
         $.content.find('[data-ignore]').off('click');
         $.content.find('[data-unignore]').off('click');
         $.content.find('[data-refresh]').off('click');
+        $.content.find('[data-html]').off('click');
         $.content.find('input[type="checkbox"]').off('change');
     }
 
-    function setup () {
-        cards.init();
-
+    function refresh () {
         $.content.find('[data-refresh]').on('click', (ev) => {
             ev.preventDefault();
             const $container = $.content.find('.card-container');
@@ -34,12 +33,16 @@
                 $container.removeClass('loading');
             }).then(setup);
         });
+    }
 
+    function checkboxes () {
         $.content.find('input[type="checkbox"]').on('change', () => {
             isHarvest = !isHarvest;
             page.redirect(`/dashboard/harvested?view=${isHarvest ? 'harvested' : 'ignored'}`);
         });
+    }
 
+    function ignore () {
         $.content.find('[data-ignore]').on('click', (ev) => {
             ev.preventDefault();
             const $target = $(ev.target),
@@ -50,7 +53,9 @@
                 page.redirect('/dashboard/harvested');
             });
         });
+    }
 
+    function uningnore () {
         $.content.find('[data-unignore]').on('click', (ev) => {
             ev.preventDefault();
             const $target = $(ev.target),
@@ -67,6 +72,19 @@
                 page.redirect('/dashboard/harvested?view=ignored');
             })
         });
+    }
+
+    function html () {
+        $.content.find('[data-html]').on('click', (ev) => ev.preventDefault());
+    }
+
+    function setup () {
+        cards.init();
+        refresh();
+        checkboxes();
+        ignore();
+        uningnore();
+        html();
     }
 
     module.exports = {

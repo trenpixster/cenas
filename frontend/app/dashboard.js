@@ -5,19 +5,20 @@
     module.exports = function dashboard () {
         $.content.html(template());
         $.get('/default_user').then((user) => {
-          $.content.html(template(user));
-          $('#google-id').focus();
+            $.content.html(template(user));
 
-          $.content.find('#update-tid').click(function() {
-            $('#update-tid').addClass('disabled');
-            $.post('/update_tid', {tid: $('#google-id').val()})
-            .then(function() {
-              $('#update-tid').removeClass('disabled');
-              $('#update-tid').text('Saved!');
-              setTimeout(function() { $('#update-tid').text('Save'); }, 1000);
+            const $googleId = $('#google-id');
+            $googleId.focus();
+
+            const $tid = $.content.find('#update-tid');
+            $tid.click(function() {
+                $tid.addClass('disabled');
+                $.post('/update_tid', { tid: $googleId.val() }).then(function() {
+                    $tid.removeClass('disabled');
+                    $tid.text('Saved!');
+                    setTimeout(function() { $tid.text('Save'); }, 1000);
+                });
             });
-          });
-
         });
     };
 }(window.jQuery));
