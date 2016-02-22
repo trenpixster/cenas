@@ -45,7 +45,7 @@ defmodule Hackathon.RuleController do
     json conn, %{success: true}
   end
 
-  def index(conn, params) do
+  def index(conn, _) do
     rules = Repo.all(Rule)
     |> Enum.map(fn (el) -> Map.drop el, [:__meta__, :__struct__] end)
 
