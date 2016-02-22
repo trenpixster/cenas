@@ -108,7 +108,6 @@
                     hasValues:  true,
                     multi:      selected.type === 'attribute' && !isFixed,
                     values:     attrs.map((attr) => {
-                        console.log(attr, values);
                         return Object.assign({
                             isSelected: attr.value === values.value
                         }, attr);
@@ -120,35 +119,23 @@
         });
     }
 
-    function setupSave (rule, click, user) {
-        $.content.find('[data-save]').on('click', () => {
-            const values = {
-                click_id: click.id,
-                title:    $.content.find('#title').val(),
-                nfa_id:   user.id, // get from /default_user,
-                trigger:  configuration.getTrigger(),
-                action:   configuration.getAction()
-            };
-
-            if (values.trigger !== false && values.action !== false) {
-                $.ajax({
-                    url:         `/rules/${rule.id}`,
-                    type:        'PUT',
-                    data:        JSON.stringify(values),
-                    dataType:    'json',
-                    contentType: 'application/json'
-                }).then(() => {
-                    page.redirect(`/dashboard/rules/${rule.id}/success`);
-                });
-            }
-        });
+    function save (rule) {
+        return (values) => {
+            $.ajax({
+                url:         `/rules/${rule.id}`,
+                type:        'PUT',
+                data:        JSON.stringify(values),
+                dataType:    'json',
+                contentType: 'application/json'
+            }).then(() => {
+                page.redirect(`/dashboard/rules/${rule.id}/success`);
+            });
+        }
     }
 
     function setup (rule, click, user) {
         $('select').material_select();
-        configuration.trackable();
-        configuration.typeable(click);
-        setupSave(rule, click, user);
+        configuration.start(click, user, save(rule));
     }
 
     module.exports = {
@@ -164,7 +151,6 @@
                     parsedUrl:  index > 0 ? url.slice(0, index) : url
                 });
 
-            console.log(editable);
             $.content.html(template(editable));
             setup(rule, click, user);
         },

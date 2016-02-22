@@ -3,14 +3,16 @@
     <div class="card-panel">
         <div class="section wrap-content">
             <div class="section wrap-content">
-                <b><div class="chip">1</div> Name of the tracking</b>
+                <strong><div class="chip">1</div> Name of the tracking</strong>
+                <span class="red-text hide" data-title-message>Please add a title</span>
                 <div class="input-field">
                     <input id="title" type="text" class="validate" placeholder="Tracking Title" value="{{rule.title}}">
                 </div>
             </div>
             <div class="divider"></div>
             <div class="section wrap-content">
-                <b><div class="chip">2</div> What to track</b>
+                <strong><div class="chip">2</div> What to track</strong>
+                <span class="red-text hide" data-trigger-message>Please add at least one tracking rule</span>
                 <div class="input-field valign-wrapper">
                     <div class="valign" style="margin-right: 1%; margin-top: -1%">Capture clicks when </div>
                     <select id="operator">
@@ -50,7 +52,8 @@
             </div>
             <div class="divider"></div>
             <div class="section wrap-content">
-                <b><div class="chip">3</div> What to send</b>
+                <strong><div class="chip">3</div> What to send</strong>
+                <span class="red-text hide" data-action-message>Please fill the mandatory fields</span>
                 <div class="input-field valign-wrapper">
                     <div class="valign" style="margin-right: 1%; margin-top: -1%">And send</div>
                     <select id="action-type">
@@ -74,7 +77,7 @@
                                 <select {{#if multi}}multiple{{/if}}>
                                     <option value="" disabled>/path/to/path/you/get/somewhere</option>
                                 {{#each values as |val|}}
-                                    <option value="{{value}}" {{#if isSelected}}selected{{/if}}>{{name}} - {{value}}</option>
+                                    <option value="{{value}}" {{#if isSelected}}selected{{/if}}>{{name}}</option>
                                 {{/each}}
                                 </select>
                             {{else}}

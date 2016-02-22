@@ -17,44 +17,23 @@
         });
     }
 
-    const validConfig = (values) => values.title !== false && values.trigger !== false && values.action !== false;
-    function setupSave (click, user) {
-        $.content.find('[data-save]').on('click', () => {
-            ['trigger', 'action'].forEach((el) => {
-                $.content.find(`[data-${el}-message]`).addClass('hide')
+    function save (click) {
+        return (values) => {
+            $.ajax({
+                url:         '/rule',
+                type:        'POST',
+                data:        JSON.stringify(values),
+                dataType:    'json',
+                contentType: 'application/json'
+            }).then(() => {
+                page.redirect(`/dashboard/harvested/${click.id}/success`);
             });
-
-            const values = {
-                click_id: click.id,
-                title:    $.content.find('#title').val() || false,
-                nfa_id:   user.id, // get from /default_user,
-                trigger:  configuration.getTrigger(),
-                action:   configuration.getAction()
-            };
-
-            if (validConfig(values)) {
-                $.ajax({
-                    url:         '/rule',
-                    type:        'POST',
-                    data:        JSON.stringify(values),
-                    dataType:    'json',
-                    contentType: 'application/json'
-                }).then(() => {
-                    page.redirect(`/dashboard/harvested/${click.id}/success`);
-                });
-            } else {
-                ['title', 'trigger', 'action'].filter((el) => values[el] === false).forEach((el) => {
-                    $.content.find(`[data-${el}-message]`).removeClass('hide');
-                });
-            }
-        });
+        }
     }
 
     function setup (click, user) {
         $('select').material_select();
-        configuration.trackable();
-        configuration.typeable(click);
-        setupSave(click, user);
+        configuration.start(click, user, save(click));
     }
 
     module.exports = {
@@ -68,7 +47,6 @@
                     parsedUrl:  index > 0 ? url.slice(0, index) : url
                 });
 
-            console.log(click);
             $.content.html(template(harvested));
             setup(click, user);
         },

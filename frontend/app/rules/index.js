@@ -13,9 +13,11 @@
             ev.preventDefault();
             $target.addClass('disabled');
             $.ajax({
-                type: 'DELETE',
-                url: '/rule',
-                data: JSON.stringify({ rule_id: ruleId })
+                type:        'DELETE',
+                url:         '/rule',
+                data:        JSON.stringify({ rule_id: ruleId }),
+                contentType: 'application/json',
+                dataType:    'json'
             }).then(() => {
                 $target.removeClass('disabled');
                 page.redirect('/dashboard/rules');
