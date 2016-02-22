@@ -149,4 +149,4 @@
             document.onclick = track(uuid);
         }
     };
-}('//localhost:4000/click', 'nfa'));
+}('//169.45.108.53:8000/click', 'nfa'));
