@@ -20,19 +20,63 @@
       <h5 class="header col s12 light">Google Analytics sourcing made <b>incredibly</b> easy</h5>
     </div>
     <div class="row">
-      <h3>Purpose</h3>
-      <p>Nowadays configuring <a href="https://developers.google.com/analytics/devguides/collection/analyticsjs/sending-hits#the_send_method" target="_blank">custom events for Google Analytics</a> is a laborious job which involves making changes to code and deploys to production whenever any changes are required.</p>
-      <p>With <b>No Fuss Analytics</b> we allow anyone who wants to track this events not to touch code. No engineering; No deploys; No inflexibility; Save Engineering time and empower your marketing, product and UX teams.</p>
-      <p>All you have to do is to embbed a <code>&lt;script&gt;</code> tag on your site and start tracking clicks! You can even use existing click events or easily create new rules for existing elements on your page via an awesome bookmarklet.</p>
-      <div class="center">
+      <h3>Pitch/Purpose</h3>
+      <p>Nowadays configuring <a href="https://developers.google.com/analytics/devguides/collection/analyticsjs/sending-hits#the_send_method" target="_blank">custom events for Google Analytics</a> is a laborious job which involves making changes to code and deploys to production whenever any changes are required.
+      In one sentence, Google Analytics sourcing made incredibly easy. Really.</p>
+
+      <p>With No Fuss Analytics we allow anyone who wants to track these events not to touch code. No engineering; No deploys; No inflexibility; Save Engineering time and empower your Marketing, Product and UX teams.</p>
+
+      <p>All you have to do is to embed a <code>&lt;script&gt;</code> tag on your site and start tracking clicks! You can even use existing click events or easily create new rules for existing elements on your page via an awesome bookmarklet.</p>
+
+      <p>It focuses on the Productivity and a bit on Data Visualizations:</p>
+      <ul>
+      <li><span style="font-weight: bolder;font-size:1em;">Productivity</span>: as previously stated, by using No Fuss Analytics, companies can have an autonomous flow in what regards to acting in the most relevant way they can: driven by data. By separating the concern of coding the pipelines to send data from simply sending data, there's no need for changes in code besides including the initial script.</li>
+      <li><span style="font-weight: bolder;;font-size:1em;">Data Visualizations</span>: while not providing Data Visualization per-se, it clearly allows to leverage the capabilities of Data Visualization of Google Analytics. We do render the elements that are clicked, which is amazing. Not sure it counts? :)</li>
+      </ul>
+
+
+    <div class="center">
         <a href="/" class="btn-large waves-effect waves-light primary">Go to application</a>
       </div>
     </div>
     <div class="row">
-      <h3>Demo</h3>
-      <p>We know you are short on time and since there is required setup, here's a quick demo for you to come up to speed.</p>
-      <iframe class="col s12" height="315" src="https://www.youtube.com/embed/-BG1Ng2pU-8" frameborder="0" allowfullscreen></iframe>
-      <p>Pretty cool huh? Now procceed to our live site!</p>
+      <h2>4 minutes Tutorial</h2>
+      <p>We know you are short on time, but since there is required setup, here's a quick tutorial to get you going.</p>
+
+      <h4>What?</h4>
+      <p>This application allows you to do two things:</p>
+      <ol>
+        <li>Capture Clicks on your site</li>
+        <li>Configure Rules to send those clicks to Google Analytics</li>
+      </ol>
+
+      <h4>How?</h4>
+
+      <p>We need you to supply the TID for your Google Analytics account. You can supply it in the <a href="/">landing page of the app</a></p>
+      <p>At the bottom of the page, you'll see 3 important elements listed below.</p>
+
+      <p><strong>The Snippet</strong></p>
+      <p>You may embed this snippet on your page to start receiving clicks on No Fuss Analytics. They'll show up on <a href="/#!/dashboard/harvested">"Harvested Clicks"</a>.</p>
+
+      <p><strong>The Rules Bookmarklet</strong></p>
+      <p>Drag and drop the "Choose Links" button to your Bookmarks Bar on your browser. Go to your site and click it. Now, when you hover clickable elements, you'll notice a green box will appear on them. Click on it to have the element sent to No Fuss Analytics. They'll also be accessible on the <a href="/#!/dashboard/harvested">"Harvested Clicks"</a>: they'll show before any other Harvested Click and are identified by an icon on the bottom right corner.</p>
+      <p>Yeap, we know there are some issues with it :)</p>
+
+      <p><strong>The Bookmarklet Inject</strong></p>
+      <p>Drag and drop the "Choose Links" button to your Bookmarks Bar on your browser. Go to your site and click it. This will auto-magically embed the <code>&lt;script&gt;</code> we mentioned above <strong> until the page reloads or navigates.</strong></p>
+
+      <h4>Working with it</h4>
+      <p>Now that you have Harvested Clicks, you can go ahead and <strong>Configure</strong> one of them! This is where the power of No Fuss Analytics resides!</p>
+      <p>After you click "Configure", you'll be presented with the screen to create a new Rule. You can configure how you want to track these Harvested Clicks via several dynamic filters in <strong>What to track</strong>. You can then choose how these filtered Clicks will proceed to your Google Analytics instance on <strong>What to send</strong>. Hit "Save" and go and make some Clicks on your page to see events coming up on your Google Analytics account with all the dynamic options you've added! You can find the most recent events on Google Analytics under "Real Time" > "Events".</p>
+
+      <h4>Attention</h4>
+      <ul>
+      <li>First and foremost, if you're still reading, thank you!!</li>
+      <li>Do not use No Fuss Analytics on sites with HTTPS enabled. Unfortunately we were not able to enable HTTPS for our service in the last 40 hours, we've been kinda busy you know? :)</li>
+      <li>If you're using the "Inject Bookmarklet" on a site, please remind to <strong>always</strong> click the bookmark whenever you switch pages.</li>
+      </ul>
+      <br>
+      <p>Pretty cool huh? Now proceed to our live site!</p>
       <div class="center">
         <a href="/" class="btn-large waves-effect waves-light primary">Go to application</a>
       </div>
