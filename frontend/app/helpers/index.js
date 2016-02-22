@@ -70,8 +70,9 @@
 
         return options.fn({
             html: new Handlebars.SafeString(hasStyles ? $(payload.target).css(Object.assign(payload.styles, {
-                cursor: 'default',
-                outline: 'none'
+                maxWidth: '200px',
+                cursor:   'default',
+                outline:  'none'
             })).prop('outerHTML') : payload.target),
             hasStyles
         });
