@@ -4,7 +4,6 @@ defmodule Hackathon.FindMatchingClick do
 
   def call(url, target) do
     unicorn = Click.unicornify(url, target)
-    IO.puts "unicorn: #{unicorn}"
     format_response(Repo.get_by(Click, unicorn: unicorn), unicorn)
   end
 

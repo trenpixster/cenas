@@ -3,13 +3,9 @@ defmodule Hackathon.ApplyRuleInteractor do
 
   def call(action, model) do
     v = 1
-    IO.puts "doing ec:"
     ec = extract_values(action["category"], model)
-    IO.puts "doing ea:"
     ea = extract_values(action["action"], model)
-    IO.puts "doing el:"
     el = extract_values(action["label"], model)
-    IO.puts "doing ev:"
     ev = String.to_integer(extract_values(action["value"], model))
     cid = model.cid
     tid = get_tid_from_user(model.nfa_id)
