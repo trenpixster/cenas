@@ -90,8 +90,8 @@
                 title: path,
                 types: path.split('/').slice(1).map((name, value) => {
                     return {
-                        value,
-                        name: `Level ${value + 1}: ${name}`
+                        value: `${value}`,
+                        name:  `Level ${value + 1}: ${name}`
                     };
                 })
             });

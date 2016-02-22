@@ -28,6 +28,7 @@
     Handlebars.registerHelper('actions', (action, options) => {
         const types = {
             fixed: 'is',
+            'href-path': 'from clickable element path level ',
             'location-path': 'from URL path level ',
             'location-query': 'from URL query ',
             'dynamic-attribute': 'from data attribute '

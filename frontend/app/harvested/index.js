@@ -26,9 +26,12 @@
 
         $.content.find('[data-refresh]').on('click', (ev) => {
             ev.preventDefault();
+            const $container = $.content.find('.card-container');
+            $container.addClass('loading');
             destroy();
             fetch(!isHarvest).then((clicks) => {
-                $.content.find('.card-container').html(templateIt(cardsTemplate, clicks));
+                $container.html(templateIt(cardsTemplate, clicks));
+                $container.removeClass('loading');
             }).then(setup);
         });
 

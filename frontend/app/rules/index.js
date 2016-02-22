@@ -11,8 +11,12 @@
             const $target = $(ev.target),
                 ruleId = $target.data('delete');
             ev.preventDefault();
-            $.ajax({type: 'DELETE', url: '/rule', data: { rule_id: ruleId }})
-             .then(() => {
+            $target.addClass('disabled');
+            $.ajax({
+                type: 'DELETE',
+                url: '/rule',
+                data: JSON.stringify({ rule_id: ruleId })
+            }).then(() => {
                 $target.removeClass('disabled');
                 page.redirect('/dashboard/rules');
             });
@@ -24,7 +28,7 @@
     module.exports = {
         enter (ctx) {
             const { rules } = ctx;
-            $.content.html(template({ rows: chunks(rules, 3) }));
+            $.content.html(template({ rows: chunks(rules, 2) }));
             setup();
         },
 

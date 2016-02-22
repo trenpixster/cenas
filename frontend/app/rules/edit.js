@@ -47,11 +47,18 @@
             });
         },
 
-        'location-path' (click) {
-            const path = utils.pathname(click.url);
+        'location-path' (click, path = '/path/to/path/you/get/somewhere') {
             return path.split('/').slice(1).map((name, value) => {
-                return { value, name };
+                return {
+                    value: `${value}`,
+                    name:  `Level ${value + 1}: ${name}`
+                };
             });
+        },
+
+        'href-path' (click) {
+            const { clickableLink } = click.payload;
+            return this['location-path'](click, utils.pathname(clickableLink));
         },
 
         'location-query' (click) {
@@ -101,6 +108,7 @@
                     hasValues:  true,
                     multi:      selected.type === 'attribute' && !isFixed,
                     values:     attrs.map((attr) => {
+                        console.log(attr, values);
                         return Object.assign({
                             isSelected: attr.value === values.value
                         }, attr);
@@ -156,6 +164,7 @@
                     parsedUrl:  index > 0 ? url.slice(0, index) : url
                 });
 
+            console.log(editable);
             $.content.html(template(editable));
             setup(rule, click, user);
         },

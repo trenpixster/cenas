@@ -72,6 +72,7 @@
                         <div class="col s8 {{#unless hasValues}}invisible{{/unless}}" data-type-value>
                             {{#unless isFixed}}
                                 <select {{#if multi}}multiple{{/if}}>
+                                    <option value="" disabled>/path/to/path/you/get/somewhere</option>
                                 {{#each values as |val|}}
                                     <option value="{{value}}" {{#if isSelected}}selected{{/if}}>{{name}} - {{value}}</option>
                                 {{/each}}

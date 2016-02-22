@@ -5,7 +5,7 @@
     <div class="col s6">
         <div class="card" data-id="{{id}}">
             <div class="card-content">
-                <span class="card-title primary-text activator">{{title}}</span>
+                <span class="card-title primary-text activator">{{title}} (Preview)</span>
             </div>
             <div class="card-reveal">
                 <span class="card-title grey-text text-darken-4">{{title}}<i class="material-icons right">close</i></span>
@@ -14,7 +14,7 @@
                 </div>
                 <div class="section">
                     <ul class="collection with-header">
-                        <li class="collection-header"><strong>Trigger Rules ({{operator trigger}})</strong></li>
+                        <li class="collection-header grey lighten-2"><strong>Trigger Rules ({{operator trigger}})</strong></li>
                         {{#each trigger.rules as |trigger|}}
                         <li class="collection-item"><strong>{{trigger.attribute}}</strong> {{trigger.operator}} {{trigger.value}}</li>
                         {{/each}}
@@ -22,7 +22,7 @@
                 </div>
                 <div class="section">
                     <ul class="collection with-header">
-                        <li class="collection-header"><strong>Action taken {{event-type action}}</strong></li>
+                        <li class="collection-header grey lighten-2"><strong>Action taken {{event-type action}}</strong></li>
                         {{#actions rule.action.payload}}
                         <li class="collection-item"><strong>{{attribute}}</strong> {{type}} {{value}}</li>
                         {{/actions}}

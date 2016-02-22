@@ -12,7 +12,7 @@
                 }, 300);
             });
 
-            $(document).on('click', '.card-reveal', (ev) => {
+            $(document).on('click', '.card-reveal > .card-title', (ev) => {
                 const $card = $(ev.target).closest('.card'),
                     $content = $card.find('.card-content'),
                     $action = $card.find('.card-action');
